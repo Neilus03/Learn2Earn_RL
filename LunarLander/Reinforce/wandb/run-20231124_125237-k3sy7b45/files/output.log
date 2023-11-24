@@ -1,0 +1,12 @@
+/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/site-packages/gymnasium/wrappers/record_video.py:94: UserWarning: [33mWARN: Overwriting existing videos at /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3 folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)
+  logger.warn(
+Moviepy - Building video /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4.
+Moviepy - Writing video /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4
+Moviepy - Done !
+Moviepy - video ready /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4
+Error in callback <bound method _WandbInit._pause_backend of <wandb.sdk.wandb_init._WandbInit object at 0x7f22565b5590>> (for post_run_cell), with arguments args (<ExecutionResult object at 7f229b98f5d0, execution_count=4 error_before_exec=None error_in_exec=REINFORCE.save_model() missing 1 required positional argument: 'path' info=<ExecutionInfo object at 7f2384717fd0, raw_cell="
+# Initialize Weights & Biases
+wandb.init(project=.." store_history=True silent=False shell_futures=True cell_id=vscode-notebook-cell:/home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/REINFORCE_Lunar_Landerv3.ipynb#W3sZmlsZQ%3D%3D> result=None>,),kwargs {}:
+Error in callback <bound method _WandbInit._resume_backend of <wandb.sdk.wandb_init._WandbInit object at 0x7f22565b5590>> (for pre_run_cell), with arguments args (<ExecutionInfo object at 7f2256598a10, raw_cell="import numpy as np
+import matplotlib.pyplot as plt.." store_history=True silent=False shell_futures=True cell_id=vscode-notebook-cell:/home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/REINFORCE_Lunar_Landerv3.ipynb#W0sZmlsZQ%3D%3D>,),kwargs {}:
+Error in callback <bound method _WandbInit._pause_backend of <wandb.sdk.wandb_init._WandbInit object at 0x7f22565b5590>> (for post_run_cell), with arguments args (<ExecutionResult object at 7f2256599a90, execution_count=5 error_before_exec=None error_in_exec=None info=<ExecutionInfo object at 7f2256598a10, raw_cell="import numpy as np
