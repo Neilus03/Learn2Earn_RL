@@ -1,0 +1,167 @@
+{
+    "os": "Linux-6.2.0-36-generic-x86_64-with-glibc2.35",
+    "python": "3.11.5",
+    "heartbeatAt": "2023-11-24T11:19:59.688775",
+    "startedAt": "2023-11-24T11:19:58.912061",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "git@github.com:Neilus03/Learn2Earn_RL.git",
+        "commit": "79650a7fd7402c3b6afe99fb05bf5d8fc63f0e75"
+    },
+    "email": "neildlf@gmail.com",
+    "root": "/home/ndelafuente/Learn2Earn_RL",
+    "host": "cvc201",
+    "username": "ndelafuente",
+    "executable": "/home/ndelafuente/miniconda3/envs/pytorch-env/bin/python",
+    "cpu_count": 12,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3.2601250000000004,
+        "min": 3000.0,
+        "max": 4700.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.0,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.954,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.889,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 5.131,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.993,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 3.116,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 4.001,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.72,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 4.972,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.793,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.747,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.755,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 3.0,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 4.595,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 4.8,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 3.0,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.957,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 3.25,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 5.236,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.739,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 5.436,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.747,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.722,
+            "min": 3000.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2.841,
+            "min": 3000.0,
+            "max": 4700.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1828.9447555541992,
+            "used": 179.22002792358398
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 4060 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 4060 Ti",
+            "memory_total": 17175674880
+        }
+    ],
+    "memory": {
+        "total": 62.004127502441406
+    }
+}

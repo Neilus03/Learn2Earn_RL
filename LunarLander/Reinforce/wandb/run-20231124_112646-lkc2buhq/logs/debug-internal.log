@@ -1,0 +1,78 @@
+2023-11-24 11:26:46,889 INFO    StreamThr :2085891 [internal.py:wandb_internal():86] W&B internal server running at pid: 2085891, started at: 2023-11-24 11:26:46.889160
+2023-11-24 11:26:46,890 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status
+2023-11-24 11:26:46,893 INFO    WriterThread:2085891 [datastore.py:open_for_write():85] open: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/run-lkc2buhq.wandb
+2023-11-24 11:26:46,893 DEBUG   SenderThread:2085891 [sender.py:send():380] send: header
+2023-11-24 11:26:46,898 DEBUG   SenderThread:2085891 [sender.py:send():380] send: run
+2023-11-24 11:26:47,531 INFO    SenderThread:2085891 [dir_watcher.py:__init__():211] watching files in: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files
+2023-11-24 11:26:47,531 INFO    SenderThread:2085891 [sender.py:_start_run_threads():1122] run started: lkc2buhq with start time 1700821606.889176
+2023-11-24 11:26:47,533 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: check_version
+2023-11-24 11:26:47,533 DEBUG   SenderThread:2085891 [sender.py:send_request():407] send_request: check_version
+2023-11-24 11:26:47,878 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: run_start
+2023-11-24 11:26:47,890 DEBUG   HandlerThread:2085891 [system_info.py:__init__():32] System info init
+2023-11-24 11:26:47,890 DEBUG   HandlerThread:2085891 [system_info.py:__init__():47] System info init done
+2023-11-24 11:26:47,890 INFO    HandlerThread:2085891 [system_monitor.py:start():194] Starting system monitor
+2023-11-24 11:26:47,891 INFO    SystemMonitor:2085891 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-11-24 11:26:47,891 INFO    HandlerThread:2085891 [system_monitor.py:probe():214] Collecting system info
+2023-11-24 11:26:47,891 INFO    SystemMonitor:2085891 [interfaces.py:start():190] Started cpu monitoring
+2023-11-24 11:26:47,892 INFO    SystemMonitor:2085891 [interfaces.py:start():190] Started disk monitoring
+2023-11-24 11:26:47,892 INFO    SystemMonitor:2085891 [interfaces.py:start():190] Started gpu monitoring
+2023-11-24 11:26:47,892 INFO    SystemMonitor:2085891 [interfaces.py:start():190] Started memory monitoring
+2023-11-24 11:26:47,893 INFO    SystemMonitor:2085891 [interfaces.py:start():190] Started network monitoring
+2023-11-24 11:26:47,903 DEBUG   HandlerThread:2085891 [system_info.py:probe():196] Probing system
+2023-11-24 11:26:47,905 DEBUG   HandlerThread:2085891 [system_info.py:_probe_git():181] Probing git
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_info.py:_probe_git():189] Probing git done
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_info.py:probe():244] Probing system done
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_monitor.py:probe():223] {'os': 'Linux-6.2.0-36-generic-x86_64-with-glibc2.35', 'python': '3.11.5', 'heartbeatAt': '2023-11-24T10:26:47.903350', 'startedAt': '2023-11-24T10:26:46.884354', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '<python with no main file>', 'codePathLocal': None, 'git': {'remote': 'git@github.com:Neilus03/Learn2Earn_RL.git', 'commit': '79650a7fd7402c3b6afe99fb05bf5d8fc63f0e75'}, 'email': 'neildlf@gmail.com', 'root': '/home/ndelafuente/Learn2Earn_RL', 'host': 'cvc201', 'username': 'ndelafuente', 'executable': '/home/ndelafuente/miniconda3/envs/pytorch-env/bin/python', 'cpu_count': 12, 'cpu_count_logical': 24, 'cpu_freq': {'current': 4.060291666666667, 'min': 3000.0, 'max': 4700.0}, 'cpu_freq_per_core': [{'current': 2.744, 'min': 3000.0, 'max': 4700.0}, {'current': 5.489, 'min': 3000.0, 'max': 4700.0}, {'current': 2.744, 'min': 3000.0, 'max': 4700.0}, {'current': 3.144, 'min': 3000.0, 'max': 4700.0}, {'current': 2.744, 'min': 3000.0, 'max': 4700.0}, {'current': 5.256, 'min': 3000.0, 'max': 4700.0}, {'current': 5.339, 'min': 3000.0, 'max': 4700.0}, {'current': 5.114, 'min': 3000.0, 'max': 4700.0}, {'current': 5.33, 'min': 3000.0, 'max': 4700.0}, {'current': 4.813, 'min': 3000.0, 'max': 4700.0}, {'current': 5.357, 'min': 3000.0, 'max': 4700.0}, {'current': 5.26, 'min': 3000.0, 'max': 4700.0}, {'current': 2.742, 'min': 3000.0, 'max': 4700.0}, {'current': 5.488, 'min': 3000.0, 'max': 4700.0}, {'current': 2.744, 'min': 3000.0, 'max': 4700.0}, {'current': 3.778, 'min': 3000.0, 'max': 4700.0}, {'current': 2.742, 'min': 3000.0, 'max': 4700.0}, {'current': 5.411, 'min': 3000.0, 'max': 4700.0}, {'current': 5.229, 'min': 3000.0, 'max': 4700.0}, {'current': 5.344, 'min': 3000.0, 'max': 4700.0}, {'current': 5.361, 'min': 3000.0, 'max': 4700.0}, {'current': 3.663, 'min': 3000.0, 'max': 4700.0}, {'current': 5.357, 'min': 3000.0, 'max': 4700.0}, {'current': 5.098, 'min': 3000.0, 'max': 4700.0}], 'disk': {'/': {'total': 1828.9447555541992, 'used': 178.7545166015625}}, 'gpu': 'NVIDIA GeForce RTX 4060 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 4060 Ti', 'memory_total': 17175674880}], 'memory': {'total': 62.004127502441406}}
+2023-11-24 11:26:47,909 INFO    HandlerThread:2085891 [system_monitor.py:probe():224] Finished collecting system info
+2023-11-24 11:26:47,909 INFO    HandlerThread:2085891 [system_monitor.py:probe():227] Publishing system info
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_info.py:_save_pip():68] Saving pip packages done
+2023-11-24 11:26:47,909 DEBUG   HandlerThread:2085891 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-11-24 11:26:47,910 ERROR   HandlerThread:2085891 [system_info.py:_save_conda():86] Error saving conda packages: [Errno 2] No such file or directory: 'conda'
+Traceback (most recent call last):
+  File "/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/site-packages/wandb/sdk/internal/system/system_info.py", line 82, in _save_conda
+    subprocess.call(
+  File "/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/subprocess.py", line 389, in call
+    with Popen(*popenargs, **kwargs) as p:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/subprocess.py", line 1950, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'conda'
+2023-11-24 11:26:47,911 DEBUG   HandlerThread:2085891 [system_info.py:_save_conda():87] Saving conda packages done
+2023-11-24 11:26:47,911 INFO    HandlerThread:2085891 [system_monitor.py:probe():229] Finished publishing system info
+2023-11-24 11:26:47,915 DEBUG   SenderThread:2085891 [sender.py:send():380] send: files
+2023-11-24 11:26:47,916 INFO    SenderThread:2085891 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-11-24 11:26:47,920 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: stop_status
+2023-11-24 11:26:47,921 DEBUG   SenderThread:2085891 [sender.py:send_request():407] send_request: stop_status
+2023-11-24 11:26:47,921 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: internal_messages
+2023-11-24 11:26:48,409 DEBUG   SenderThread:2085891 [sender.py:send():380] send: telemetry
+2023-11-24 11:26:48,495 INFO    wandb-upload_0:2085891 [upload_job.py:push():131] Uploaded file /tmp/tmp5wt8l4wnwandb/n1ubda13-wandb-metadata.json
+2023-11-24 11:26:48,532 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_created():271] file/dir created: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/wandb-metadata.json
+2023-11-24 11:26:48,532 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_created():271] file/dir created: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/output.log
+2023-11-24 11:26:48,532 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_created():271] file/dir created: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/conda-environment.yaml
+2023-11-24 11:26:48,532 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_created():271] file/dir created: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/requirements.txt
+2023-11-24 11:26:50,532 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/output.log
+2023-11-24 11:26:52,442 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:26:57,443 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:02,443 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:02,921 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: stop_status
+2023-11-24 11:27:02,921 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: internal_messages
+2023-11-24 11:27:02,921 DEBUG   SenderThread:2085891 [sender.py:send_request():407] send_request: stop_status
+2023-11-24 11:27:08,141 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:13,141 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:17,921 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: stop_status
+2023-11-24 11:27:17,921 DEBUG   SenderThread:2085891 [sender.py:send_request():407] send_request: stop_status
+2023-11-24 11:27:17,964 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: internal_messages
+2023-11-24 11:27:18,155 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:18,538 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/config.yaml
+2023-11-24 11:27:23,339 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:28,339 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:32,921 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: stop_status
+2023-11-24 11:27:32,921 DEBUG   SenderThread:2085891 [sender.py:send_request():407] send_request: stop_status
+2023-11-24 11:27:32,964 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: internal_messages
+2023-11-24 11:27:34,106 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:39,106 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
+2023-11-24 11:27:44,544 INFO    Thread-12 :2085891 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/ndelafuente/Learn2Earn_RL/LunarLander/Reinforce/wandb/run-20231124_112646-lkc2buhq/files/output.log
+2023-11-24 11:27:44,692 DEBUG   HandlerThread:2085891 [handler.py:handle_request():146] handle_request: status_report
