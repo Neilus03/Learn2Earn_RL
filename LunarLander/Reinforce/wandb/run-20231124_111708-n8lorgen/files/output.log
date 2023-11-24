@@ -1,1 +1,0 @@
-/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/site-packages/gymnasium/core.py:311: UserWarning: [33mWARN: env.to to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.to` for environment variables or `env.get_wrapper_attr('to')` that will search the reminding wrappers.
