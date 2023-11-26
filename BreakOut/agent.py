@@ -45,7 +45,8 @@ class Agent:
         '''
         if random.random() > epsilon: # Select the action with the highest Q-value	
             with torch.no_grad(): # Disable gradient calculation because we are not training the DQN, and we don't want to waste memory
-                state = torch.tensor([state], device=self.device, dtype=torch.float32) # Convert the state to a torch tensor
+                state = torch.tensor(np.array([state]), device=self.device, dtype=torch.float32) # Convert the state to a torch tensor
+
                 q_values = self.policy_net(state) # Get the Q-values from the policy network for the current state, which is the output of the network
                 action = q_values.max(1)[1].view(1, 1).item() # Select the action with the highest Q-value.
                          #here we use the max() method to get the highest Q-value, and the item() method to get the value of the tensor as a python number

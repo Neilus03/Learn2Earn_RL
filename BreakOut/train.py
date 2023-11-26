@@ -20,7 +20,7 @@ wandb.init(project="breakout-dqn1", entity="ai42")
 pygame.init()
 
 # Define a video directory for logging videos of the agent playing Breakout
-video_dir = '/home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Breakout/Videos1' # Set this to your preferred directory
+video_dir = 'C:\Users\neild\OneDrive\Documentos\ARTIFICIAL INTELLIGENCE (UAB)\3º\1st semester\ML Paradigms\Learn2Earn_RL-1\BreakOut' # Set this to your preferred directory
 os.makedirs(video_dir, exist_ok=True) # Make the video directory if it doesn't exist
 
 def train():
@@ -31,9 +31,8 @@ def train():
             and training the agent using the collected experiences.
     '''
     # Initialize the environment and the agent
-    env = BreakoutEnvWrapper()
-    #env = gym.wrappers.RecordVideo(env, video_folder=video_dir)
-
+    env = BreakoutEnvWrapper() # Create the Breakout environment
+    env = gym.wrappers.RecordVideo(env, video_folder=video_dir, episode_trigger=lambda episode_id: True) # Record videos of the agent playing Breakout
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
                   replay_memory_capacity=config.replay_memory_size, 
@@ -91,11 +90,11 @@ def train():
         if config.render: #For now this is set to False because it is failing to render the game on screen
            log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
             
-        # Get the total reward of the episode
-        reward = np.sum([experience.reward for experience in replay_memory.memory])  
+        # Get the total reward of all the episodes in the replay memory
+        main_reward = np.sum([experience.reward for experience in replay_memory.memory])  
         
         # Log the episode number, the number of steps in the episode, and the total reward of the episode
-        wandb.log({"Episode": episode, "Steps": step, "Total Reward": reward})
+        wandb.log({"Episode": episode, "Steps": step, "Main Reward": main_reward})
 
         
     env.close() # Close the environment

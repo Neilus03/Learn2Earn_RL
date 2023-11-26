@@ -12,5 +12,5 @@ epsilon_decay = 30000
 num_episodes = 1000
 max_steps = 1000
 save_checkpoint_every = 10
-render = False
+render = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
