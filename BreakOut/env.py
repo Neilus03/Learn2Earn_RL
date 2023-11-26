@@ -1,10 +1,6 @@
 import gymnasium as gym
 import numpy as np
 import cv2
-#import ale_py
-
-#ale_py.ALEInterface.set_bool('sound', False) # Disable sound
-#gym.register(id='ALE/Breakout-v5', entry_point='gymnasium.envs.atari:AtariEnv', kwargs={'game': 'breakout', 'obs_type': 'image', 'frameskip': 5})
 
 
 class BreakoutEnvWrapper:
