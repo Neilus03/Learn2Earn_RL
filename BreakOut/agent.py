@@ -5,6 +5,7 @@ import random
 from DQN_model import DeepQNetwork
 from replay_memory import ReplayMemory, Experience
 from env import BreakoutEnvWrapper
+import numpy as np
 
 
 class Agent:
@@ -13,7 +14,6 @@ class Agent:
         initialize the agent.
         '''
         self.state_space = state_space # shape of the input image (F, 84, 84) in Breakout, where F is the number of stacked frames
-        print("state_space:", state_space)
         self.action_space = action_space # The number of possible actions
         self.replay_memory = ReplayMemory(replay_memory_capacity) # Create the replay memory with the specified capacity
         self.batch_size = batch_size # The size of the batch of experiences sampled from the replay memory
@@ -21,8 +21,8 @@ class Agent:
         self.lr = lr # The learning rate of the optimizer
         self.target_update = target_update # The number of episodes between updating the target network
         self.device = device # The device to use for training the DQN (cpu or gpu)
-        self.policy_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The policy network
-        self.target_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The target network
+        self.policy_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The policy network used to select actions
+        self.target_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The target network used to calculate the Q-values and stabilize the training
         self.target_net.load_state_dict(self.policy_net.state_dict()) # Initialize the weights of the target network to be the same as the policy network
         self.target_net.eval()  # Target net is not trained, so we set it to evaluation mode
         self.optimizer = optim.Adam(params=self.policy_net.parameters(), lr=lr) # The optimizer used to train the policy network
@@ -75,9 +75,9 @@ class Agent:
             actions = torch.tensor(batch.action, device=self.device, dtype=torch.int64) # a batch of actions
             rewards = torch.tensor(batch.reward, device=self.device, dtype=torch.float32) # a batch of rewards
             next_states = torch.tensor(batch.next_state, device=self.device, dtype=torch.float32) # a batch of next states
-            terminateds = torch.tensor(batch.terminated, device=self.device, dtype=torch.uint8) # a batch of terminated flags
-            truncateds = torch.tensor(batch.truncated, device=self.device, dtype=torch.uint8) # a batch of truncated flags
-            dones = terminateds or truncateds # dones is True if the episode is terminated or truncated, otherwise it is False
+            terminateds = torch.tensor(batch.terminated, device=self.device, dtype=torch.bool) # a batch of terminated flags
+            truncateds = torch.tensor(batch.truncated, device=self.device, dtype=torch.bool) # a batch of truncated flags
+            dones = terminateds | truncateds # dones is True if the episode is terminated or truncated, otherwise it is False, this is done with a logical or (|)
             
             # Calculate the Q-values for the current states using the policy network
             current_q_values = self.policy_net(states).gather(1, actions.unsqueeze(-1)) # gather() is used to select the Q-values of the actions taken in the current states
@@ -126,45 +126,61 @@ class Agent:
         and it is updated every target_update episodes. This is done to stabilize the training of the DQN by
         preventing the target Q-values from changing too rapidly and causing oscillations or divergence.
         '''
-        if self.push_count % self.target_update == 0: # We don't do this every episode because it is expensive
+        if self.replay_memory.push_count % self.target_update == 0: # We don't do this every episode because it is expensive
             self.target_net.load_state_dict(self.policy_net.state_dict()) # Update the weights of the target network to be the same as the policy network
 
-# Example usage:
-
+# Example usage of the Agent class:
 if __name__ == "__main__":
-    agent = Agent(state_space=4, action_space=4, replay_memory_capacity=10000, batch_size=32, gamma=0.99, lr=0.0001, target_update=10, device=torch.device("cuda" if torch.cuda.is_available() else "cpu"))
-    print(agent.policy_net)
-    print("Number of parameters:", sum(p.numel() for p in agent.policy_net.parameters() if p.requires_grad))
-    print("\nNumber of layers:", len(list(agent.policy_net.parameters())))
-    print("\nNumber of convolutional layers:", len(list(agent.policy_net.conv1.parameters())) + len(list(agent.policy_net.conv2.parameters())))
-    print("\nNumber of fully connected layers:", len(list(agent.policy_net.fc1.parameters())) + len(list(agent.policy_net.fc2.parameters())))
-    print("\nNumber of neurons in the first fully connected layer:", len(list(agent.policy_net.fc1.parameters())))
-    print("\nNumber of neurons in the second fully connected layer:", len(list(agent.policy_net.fc2.parameters())))
-    print("\nNumber of neurons in the convolutional layers:", len(list(agent.policy_net.conv1.parameters())) + len(list(agent.policy_net.conv2.parameters())))
-    print("\nNumber of parameters in the optimizer:", len(list(agent.optimizer.state_dict()["state"].keys())))
-    print("\nNumber of parameters in the replay memory:", len(agent.replay_memory.memory))
-    print("\nNumber of parameters in the batch:", len(agent.replay_memory.sample(32)))
-    print("\nNumber of parameters in the experience:", len(agent.replay_memory.sample(32)[0]))
-    print("\nNumber of parameters in the state:", len(agent.replay_memory.sample(32)[0].state))
-    print("\nNumber of parameters in the action:", len(agent.replay_memory.sample(32)[0].action))
-    print("\nNumber of parameters in the reward:", len(agent.replay_memory.sample(32)[0].reward))
-    print("\nNumber of parameters in the next state:", len(agent.replay_memory.sample(32)[0].next_state))
-    print("\nNumber of parameters in the terminated flag:", len(agent.replay_memory.sample(32)[0].terminated))
-    print("\nNumber of parameters in the truncated flag:", len(agent.replay_memory.sample(32)[0].truncated))
-    print("\nNumber of parameters in the dones flag:", len(agent.replay_memory.sample(32)[0].terminated or agent.replay_memory.sample(32)[0].truncated))
-    print("\nNumber of parameters in the states tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].state, device=agent.device, dtype=torch.float32)))
-    print("\nNumber of parameters in the actions tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].action, device=agent.device, dtype=torch.int64)))
-    print("\nNumber of parameters in the rewards tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].reward, device=agent.device, dtype=torch.float32)))
-    print("\nNumber of parameters in the next states tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].next_state, device=agent.device, dtype=torch.float32)))
-    print("\nNumber of parameters in the terminateds tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].terminated, device=agent.device, dtype=torch.uint8)))
-    print("\nNumber of parameters in the truncateds tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].truncated, device=agent.device, dtype=torch.uint8)))
-    print("\nNumber of parameters in the dones tensor:", len(torch.tensor(agent.replay_memory.sample(32)[0].terminated or agent.replay_memory.sample(32)[0].truncated, device=agent.device, dtype=torch.uint8)))
-    print("\nNumber of parameters in the current q values:", len(agent.policy_net(torch.tensor(agent.replay_memory.sample(32)[0].state, device=agent.device, dtype=torch.float32)).gather(1, torch.tensor(agent.replay_memory.sample(32)[0].action, device=agent.device, dtype=torch.int64).unsqueeze(-1))))
-    print("\nNumber of parameters in the next q values:", len(agent.target_net(torch.tensor(agent.replay_memory.sample(32)[0].next_state, device=agent.device, dtype=torch.float32)).max(1)[0].detach()))
-    print("\nNumber of parameters in the expected q values:", len(torch.tensor(agent.replay_memory.sample(32)[0].reward, device=agent.device, dtype=torch.float32) + (agent.gamma * agent.target_net(torch.tensor(agent.replay_memory.sample(32)[0].next_state, device=agent.device, dtype=torch.float32)).max(1)[0].detach() * (1 - (torch.tensor(agent.replay_memory.sample(32)[0].terminated, device=agent.device, dtype=torch.uint8) or torch.tensor(agent.replay_memory.sample(32)[0].truncated, device=agent.device, dtype=torch.uint8))))))
-    print("\nNumber of parameters in the loss:", len(F.mse_loss(agent.policy_net(torch.tensor(agent.replay_memory.sample(32)[0].state, device=agent.device, dtype=torch.float32)).gather(1, torch.tensor(agent.replay_memory.sample(32)[0].action, device=agent.device, dtype=torch.int64).unsqueeze(-1)), torch.tensor(agent.replay_memory.sample(32)[0].reward, device=agent.device, dtype=torch.float32) + (agent.gamma * agent.target_net(torch.tensor(agent.replay_memory.sample(32)[0].next_state, device=agent.device, dtype=torch.float32)).max(1)[0].detach() * (1 - (torch.tensor(agent.replay_memory.sample(32)[0].terminated, device=agent.device, dtype=torch.uint8) or torch.tensor(agent.replay_memory.sample(32)[0].truncated, device=agent.device, dtype=torch.uint8)))))))
-    print("\nNumber of parameters in the optimizer gradients:", len(agent.optimizer.zero_grad()))
-    print("\nNumber of parameters in the optimizer weights:", len(agent.optimizer.step()))
-    print("\nNumber of parameters in the target network weights:", len(agent.target_net.load_state_dict(agent.policy_net.state_dict())))
-    print("\nNumber of parameters in the target network:", len(agent.target_net))
+    # Initialize the Breakout environment wrapper
+    env_wrapper = BreakoutEnvWrapper()
     
+    # Define the state space dimensions (stack size, image height, image width)
+    state_space_dims = (4, 84, 84)
+    
+    # Initialize the agent with the specified parameters
+    agent = Agent(
+        state_space=state_space_dims,
+        action_space=env_wrapper.action_space,
+        replay_memory_capacity=10000,
+        batch_size=32,
+        gamma=0.99,
+        lr=0.0001,
+        target_update=10,
+        device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    )
+
+    # Process the initial environment state (stacking four initial frames)
+    initial_state = env_wrapper.reset()
+    state_stack = [initial_state] * 4  # Stack 4 initial states for the first state
+
+    # Run through some steps to populate the replay memory
+    for _ in range(10):
+        stacked_state = np.stack(state_stack, axis=0)
+        print(f"Stacked state shape: {stacked_state.shape}")
+        print(f"Stacked state: {stacked_state}")
+        
+        action = agent.select_action(stacked_state, epsilon=0.1)
+        
+        print(f"Action: {action}")
+        
+        next_state, reward, terminated, truncated, info = env_wrapper.step(action)
+        
+        print(f"Next state shape: {next_state.shape}, Reward: {reward}, Terminated: {terminated}, Truncated: {truncated}, Info: {info}")
+        
+        # Update the state stack with the new frame
+        state_stack.pop(0)  # Remove the oldest frame
+        state_stack.append(next_state)  # Add the new frame
+
+        # Convert the stacked state to a format suitable for the replay memory
+        next_stacked_state = np.stack(state_stack, axis=0)
+
+        # Save the transition in the replay memory
+        agent.replay_memory.push(stacked_state, action, reward, next_stacked_state, terminated, truncated)
+
+        if terminated or truncated:
+            # Start a new episode if the last one is terminated or truncated
+            state = env_wrapper.reset()
+            state_stack = [initial_state] * 4  # Reset the state stack
+
+    # Close the environment after populating replay memory
+    env_wrapper.env.close()

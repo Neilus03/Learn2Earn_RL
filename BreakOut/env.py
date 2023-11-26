@@ -13,9 +13,12 @@ class BreakoutEnvWrapper:
     the images and simplifies interaction with the environment.
     """
 
-    def __init__(self, env_name='ALE/Breakout-v5',  max_episode_steps=1000, render_mode='rgb_array'):
-        self.env = gym.make(env_name, render_mode) # Create the environment
+    def __init__(self, env_name='ALE/Breakout-v5',  max_episode_steps=1000):
+        self.env = gym.make(env_name) # Create the environment
         self.env._max_episode_steps = max_episode_steps # Set the maximum number of steps in an episode
+        self.render_mode = 'rgb_array' # Set the render mode to rgb_array
+        self.metadata = self.env.metadata # Get the metadata of the underlying gymnasium environment
+        self.metadata['render_fps'] = 30
         
         # Get the action space, color space and needed shape of the environment
         self.action_space = self.env.action_space.n # The number of possible actions in the environment (4 in Breakout)
@@ -35,11 +38,12 @@ class BreakoutEnvWrapper:
         return normalized.astype(np.float32)  # Return the image as a float32
 
 
-    def reset(self):
+    def reset(self, **kwargs):
         """
         Resets the environment and preprocesses the initial observation.
+        Now handles additional keyword arguments for compatibility with Gymnasium's RecordVideo wrapper.
         """
-        observation, info = self.env.reset() # Get the initial observation from the environment
+        observation, info = self.env.reset(**kwargs) # Get the initial observation from the environment
         return self.preprocess(observation)  # Preprocess the observation (change color space, resize, normalize) and return it
 
 
@@ -54,8 +58,11 @@ class BreakoutEnvWrapper:
 
     def render(self, mode='rgb_array'):
         """ Renders the environment on screen. """
-        self.env.render(render_mode=mode) # Render the environment on screen (currently failing for some reason)
+        self.env.render() # Render the environment on screen (currently failing for some reason)
 
+    def close(self):
+        """ Close the environment. """
+        self.env.close() # Close the environment
 
 
 
@@ -71,7 +78,7 @@ if __name__ == "__main__":
         print(f"Next state shape: {next_state.shape}, Reward: {reward}, Terminated: {terminated}, Truncated: {truncated}, Info: {info}")
 
         # Attempt to render the environment on screen
-        # env_wrapper.render() This is failing now, I have to check why it is failing
+        #env_wrapper.render() #This is failing now, I have to check why it is failing
 
         if terminated or truncated:
             print("Episode finished after 10 steps.")
