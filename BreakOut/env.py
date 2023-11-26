@@ -54,7 +54,7 @@ class BreakoutEnvWrapper:
 
     def render(self, mode='rgb_array'):
         """ Renders the environment on screen. """
-        self.env.render() # Render the environment on screen (currently failing for some reason)
+        self.env.render(mode) # Render the environment on screen (currently failing for some reason)
 
     def close(self):
         """ Close the environment. """

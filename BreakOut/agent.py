@@ -24,7 +24,7 @@ class Agent:
         self.policy_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The policy network used to select actions
         self.target_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The target network used to calculate the Q-values and stabilize the training
         self.target_net.load_state_dict(self.policy_net.state_dict()) # Initialize the weights of the target network to be the same as the policy network
-        self.target_net.eval()  # Target net is not trained, so we set it to evaluation mode
+        self.target_net.eval() # Target net is not trained, so we set it to evaluation mode
         self.optimizer = optim.Adam(params=self.policy_net.parameters(), lr=lr) # The optimizer used to train the policy network
         '''
         Note: the target network is a copy of the policy network, that serves as a reference for the Q-values, 

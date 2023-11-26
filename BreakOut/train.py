@@ -6,19 +6,22 @@ from checkpoint import save_checkpoint, load_checkpoint
 import config
 
 import matplotlib.pyplot as plt
+from IPython import display
 import numpy as np
 import wandb
 import os
 import gymnasium as gym
+import pygame
+
 # Initialize wandb for logging metrics
 wandb.init(project="breakout-dqn1", entity="ai42")
 
-# Define a video directory
+# Initialize pygame for rendering the Breakout game (this isn't helping currently)
+pygame.init()
+
+# Define a video directory for logging videos of the agent playing Breakout
 video_dir = '/home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Breakout/Videos1' # Set this to your preferred directory
-os.makedirs(video_dir, exist_ok=True)
-
-# Wrap your environment to record videos
-
+os.makedirs(video_dir, exist_ok=True) # Make the video directory if it doesn't exist
 
 def train():
     '''
@@ -29,9 +32,8 @@ def train():
     '''
     # Initialize the environment and the agent
     env = BreakoutEnvWrapper()
-    env = gym.wrappers.RecordVideo(env, video_folder=video_dir)
+    #env = gym.wrappers.RecordVideo(env, video_folder=video_dir)
 
-    
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
                   replay_memory_capacity=config.replay_memory_size, 
@@ -47,7 +49,7 @@ def train():
     # Begin training loop over episodes
     for episode in range(config.num_episodes): 
         # Initialize the state by resetting the environment
-        state = env.reset()
+        state = env.reset() 
         
         # Initialize the stack of states by stacking the same state 4 times, once the state is
         # updated, the stack will be updated too, so it wont be the same state 4 times anymore
@@ -59,11 +61,11 @@ def train():
             action = agent.select_action(state, get_epsilon(episode)) # Epsilon-greedy policy, where epsilon is decayed over episodes
             
             # Take the selected action in the environment and get the next state, reward, and other info
-            next_state, reward, terminated, truncated, info = env.step(action)
+            next_state, reward, terminated, truncated, info = env.step(action) 
             
             # Update the stack of states by stacking the next state on top of the stack of states
-            next_state_stack = update_state_stack(state, next_state)
-
+            next_state_stack = update_state_stack(state, next_state) # shape: (4, 84, 84)
+            
             # Push a new experience to the replay memory, overwriting the oldest experience if the memory is full
             replay_memory.push(state, action, reward, next_state_stack, terminated, truncated)
 
@@ -86,23 +88,16 @@ def train():
             save_checkpoint(agent, replay_memory, 'checkpoint.pth')
 
         # Render the Breakout game (partida) on screen (currently failing for some reason)
-        if config.render:
-            env.render()
-        env.render()
-        log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
-          
+        if config.render: #For now this is set to False because it is failing to render the game on screen
+           log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
+            
         # Get the total reward of the episode
         reward = np.sum([experience.reward for experience in replay_memory.memory])  
         
         # Log the episode number, the number of steps in the episode, and the total reward of the episode
         wandb.log({"Episode": episode, "Steps": step, "Total Reward": reward})
-        plt.figure(figsize=(10, 7))
-        plt.bar(episode, reward)
-        plt.title("Total Reward per Episode")
-        plt.xlabel("Episode")
-        plt.ylabel("Total Reward")
-        plt.savefig("reward.png")
-        wandb.Image("reward.png")
+
+        
     env.close() # Close the environment
 
 if __name__ == "__main__":
