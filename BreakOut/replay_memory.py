@@ -14,7 +14,7 @@ class ReplayMemory:
     It also implements a .sample() method for selecting a random batch of transitions for training.
     '''
     def __init__(self, capacity):
-        ''''
+        '''
         initialize the replay memory with a maximum capacity, and an empty list to store the experiences
         '''        
         self.capacity = capacity
