@@ -53,7 +53,10 @@ def train():
         # Initialize the stack of states by stacking the same state 4 times, once the state is
         # updated, the stack will be updated too, so it wont be the same state 4 times anymore
         state = np.stack([state] * 4, axis=0) # shape: (4, 84, 84)
-
+        
+        # Initialize the episode reward to 0
+        episode_reward = 0 # Initialize the reward to 0
+        
         # Begin episode loop over steps
         for step in range(config.max_steps): 
             # Select an action using the agent's policy
@@ -61,6 +64,9 @@ def train():
             
             # Take the selected action in the environment and get the next state, reward, and other info
             next_state, reward, terminated, truncated, info = env.step(action) 
+            
+            # Update the episode reward by adding the reward of the current step
+            episode_reward += reward
             
             # Update the stack of states by stacking the next state on top of the stack of states
             next_state_stack = update_state_stack(state, next_state) # shape: (4, 84, 84)
@@ -91,10 +97,21 @@ def train():
            log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
             
         # Get the total reward of all the episodes in the replay memory
-        main_reward = np.sum([experience.reward for experience in replay_memory.memory])  
         
+        main_reward = np.sum([experience.reward for experience in replay_memory.memory])  
+        ''' 
+            remember that the replay memory is a list of experiences, this
+            experiences are objects of the class Experience defined in replay_memory.py 
+            and have the attributes state, action, reward, next_state, terminated, and truncated
+            so we can get the reward of each experience by using the attribute reward
+            and then we can sum all the rewards of all the experiences in the replay memory
+            to get the total reward of all the episodes in the replay memory, the capacity of the
+            replay memory is replay_memory_size, so the total reward of all the episodes in the
+            replay memory is the total reward of the last replay_memory_size episodes
+        '''
+    
         # Log the episode number, the number of steps in the episode, and the total reward of the episode
-        wandb.log({"Episode": episode, "Steps": step, "Main Reward": main_reward})
+        wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": main_reward})
 
         
     env.close() # Close the environment
