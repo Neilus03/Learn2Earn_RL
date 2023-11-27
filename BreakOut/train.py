@@ -11,7 +11,8 @@ import gymnasium as gym
 import pygame
 
 # Initialize wandb for logging metrics
-#wandb.init(project="breakout-dqn1", entity="ai42")
+if config.log_to_wandb:
+    wandb.init(project="breakout-dqn1", entity="ai42")
 
 # Initialize pygame for rendering the Breakout game (this isn't helping currently)
 pygame.init()
@@ -31,6 +32,7 @@ def train():
     '''
     # Initialize the environment and the agent
     env = BreakoutEnvWrapper() # Create the Breakout environment
+    #the line below seems to be not needed
     #env = gym.wrappers.RecordVideo(env, video_folder=video_dir, episode_trigger=lambda episode_id: True) # Record videos of the agent playing Breakout
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
@@ -115,8 +117,8 @@ def train():
         
         # Render the Breakout game (partida) on screen (currently failing for some reason)
         
-        #if config.render: #For now this is set to False because it is failing to render the game on screen
-           #log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
+        #SEEMS TO WORK WITHOUT THE LINE BELOW
+        #log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
             
         # Get the total acumulated reward of all the episodes in the replay memory and log it to wandb
         total_reward = np.sum([experience.reward for experience in replay_memory.memory]) 
@@ -132,10 +134,12 @@ def train():
         '''
     
         # Log the episode number, the number of steps in the episode, the total reward of the episode and the loss of the training step to wandb
-        #wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": total_reward, "Losses": losses[-1]})
+        if config.log_to_wandb:
+            wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": total_reward, "Losses": losses[-1]})
 
         
     env.close() # Close the environment
-    #wandb.finish() # Finish the wandb run
+    if config.log_to_wandb:
+        wandb.finish() # Finish the wandb run
 if __name__ == "__main__":
     train()
