@@ -5,11 +5,8 @@ from utils import get_epsilon, update_state_stack
 from checkpoint import save_checkpoint, load_last_checkpoint, remove_previous_checkpoints
 import config
 
-import matplotlib.pyplot as plt
-from IPython import display
 import numpy as np
 import wandb
-import os
 import gymnasium as gym
 import pygame
 
