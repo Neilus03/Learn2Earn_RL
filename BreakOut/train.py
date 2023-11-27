@@ -1,8 +1,8 @@
 from agent import Agent
 from env import BreakoutEnvWrapper
 from replay_memory import ReplayMemory
-from utils import get_epsilon, update_state_stack, log_clear_video_directory
-from checkpoint import save_checkpoint, load_checkpoint
+from utils import get_epsilon, update_state_stack
+from checkpoint import save_checkpoint, load_last_checkpoint, remove_previous_checkpoints
 import config
 
 import matplotlib.pyplot as plt
@@ -14,14 +14,16 @@ import gymnasium as gym
 import pygame
 
 # Initialize wandb for logging metrics
-wandb.init(project="breakout-dqn1", entity="ai42")
+#wandb.init(project="breakout-dqn1", entity="ai42")
 
 # Initialize pygame for rendering the Breakout game (this isn't helping currently)
 pygame.init()
 
 # Define a video directory for logging videos of the agent playing Breakout
-video_dir = r'C:\Users\neild\OneDrive\Escritorio\Breakout_videos' # Set this to your preferred directory
-os.makedirs(video_dir, exist_ok=True) # Make the video directory if it doesn't exist
+#video_dir = r'C:\Users\neild\OneDrive\Escritorio\Breakout_videos' # Set this to your preferred directory
+#os.makedirs(video_dir, exist_ok=True) # Make the video directory if it doesn't exist
+
+losses = [] # Initialize a list to store the losses of the training steps
 
 def train():
     '''
@@ -32,7 +34,7 @@ def train():
     '''
     # Initialize the environment and the agent
     env = BreakoutEnvWrapper() # Create the Breakout environment
-    env = gym.wrappers.RecordVideo(env, video_folder=video_dir, episode_trigger=lambda episode_id: True) # Record videos of the agent playing Breakout
+    #env = gym.wrappers.RecordVideo(env, video_folder=video_dir, episode_trigger=lambda episode_id: True) # Record videos of the agent playing Breakout
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
                   replay_memory_capacity=config.replay_memory_size, 
@@ -45,6 +47,13 @@ def train():
     # Initialize replay memory with a capacity of replay_memory_size
     replay_memory = ReplayMemory(config.replay_memory_size)
 
+    # Load a checkpoint if pretrained is True
+    if config.pretrained:
+        load_last_checkpoint(agent, replay_memory, config.checkpoint_dir)
+        print("Checkpoint loaded successfully")
+
+    best_reward = -np.inf # Initialize the best reward to -infinity 
+    
     # Begin training loop over episodes
     for episode in range(config.num_episodes): 
         # Initialize the state by resetting the environment
@@ -86,9 +95,12 @@ def train():
             # Update the state to the next stack of states
             state = next_state_stack
 
-            # Train the agent using a random batch of experiences from the replay memory 
-            agent.learn()
+            # Train the agent using a random batch of experiences from the replay memory and save the loss of the training step
+            loss = agent.learn() # This is done by using the agent's learn() method, which returns the loss of the training step while training the agent
 
+            # Append the loss of the training step to the losses list
+            losses.append(loss)
+            
             # Check if the episode is terminated or truncated, if so, break the episode loop
             if terminated or truncated:
                 break
@@ -97,16 +109,20 @@ def train():
         if episode % config.target_update == 0:
             agent.update_target_network()
 
-        # Save checkpoints every few episodes or at the end of training
-        if episode % config.save_checkpoint_every == 0 or episode == config.num_episodes - 1:
-            save_checkpoint(agent, replay_memory, 'checkpoint.pth')
-
+        # Save checkpoints if the episode reward is better than the best reward so far
+        if episode_reward > best_reward:
+            save_checkpoint(agent, replay_memory, config.checkpoint_dir, f'checkpoint{episode}.pth')
+            print(f"Checkpoint saved at episode {episode} with reward {episode_reward}")
+            remove_previous_checkpoints(config.checkpoint_dir)
+            best_reward = episode_reward
+        
         # Render the Breakout game (partida) on screen (currently failing for some reason)
-        if config.render: #For now this is set to False because it is failing to render the game on screen
-           log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
+        
+        #if config.render: #For now this is set to False because it is failing to render the game on screen
+           #log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
             
-        # Get the average reward of all the episodes in the replay memory and log it to wandb
-        main_reward = np.sum([experience.reward for experience in replay_memory.memory]) / len(replay_memory.memory)
+        # Get the total acumulated reward of all the episodes in the replay memory and log it to wandb
+        total_reward = np.sum([experience.reward for experience in replay_memory.memory]) 
         ''' 
             remember that the replay memory is a list of experiences, this
             experiences are objects of the class Experience defined in replay_memory.py 
@@ -118,11 +134,11 @@ def train():
             replay memory is the total reward of the last replay_memory_size episodes
         '''
     
-        # Log the episode number, the number of steps in the episode, and the total reward of the episode
-        wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": main_reward}) 
+        # Log the episode number, the number of steps in the episode, the total reward of the episode and the loss of the training step to wandb
+        #wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": total_reward, "Losses": losses[-1]})
 
         
     env.close() # Close the environment
-
+    #wandb.finish() # Finish the wandb run
 if __name__ == "__main__":
     train()
