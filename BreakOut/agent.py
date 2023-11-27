@@ -117,7 +117,8 @@ class Agent:
             # update the weights of the policy network
             self.optimizer.step()
 
-
+            return loss.item() # Return the loss to track the training progress
+            
     def update_target_network(self):
         '''
         Description:
