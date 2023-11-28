@@ -131,6 +131,8 @@ def train():
         if config.log_to_wandb:
             wandb.log({"Episode": episode, "Steps": step, "Episode Reward": episode_reward, "Main Reward": total_reward, "Losses": losses[-1]})
 
+        if episode %1000 == 0:
+            print(f"Episode: {episode} Episode Reward: {episode_reward}")
         
     env.close() # Close the environment
     if config.log_to_wandb:

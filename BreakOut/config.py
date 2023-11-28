@@ -13,9 +13,10 @@ num_episodes = 1000000
 max_steps = 10000000
 
 #FLAGS
-pretrained = True
-log_to_wandb = False
-free_checkpoint_memory = False
+pretrained = True # Set to True to load a checkpoint
+log_to_wandb = False # Set to True to log metrics to wandb
+free_checkpoint_memory = False # Set to True to remove previous checkpoints
+render = False # Set to True to render the environment
 
 #DEVICE
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -1,7 +1,7 @@
 import gymnasium as gym
 import numpy as np
 import cv2
-
+import config
 
 class BreakoutEnvWrapper:
     """ 
@@ -10,7 +10,8 @@ class BreakoutEnvWrapper:
     """
 
     def __init__(self, env_name='ALE/Breakout-v5',  max_episode_steps=1000):
-        self.env = gym.make(env_name, render_mode='human')# Create the environment
+        
+        self.env = gym.make(env_name, render_mode='human')  if config.render else gym.make(env_name) # Create the environment with rendering if render is True
         self.env._max_episode_steps = max_episode_steps # Set the maximum number of steps in an episode
         self.render_mode = 'rgb_array' # Set the render mode to rgb_array
         self.metadata = self.env.metadata # Get the metadata of the underlying gymnasium environment
