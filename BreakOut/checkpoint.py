@@ -48,6 +48,8 @@ def remove_previous_checkpoints(checkpoint_dir):
     '''
     # Get list of checkpoint files in the current directory
     checkpoint_files = [f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint')]
-    # Remove all but the last checkpoint file
-    for file in checkpoint_files[:-1]:
-        os.remove(os.path.join(checkpoint_dir, file))
+
+    # remove the checkpoints with lower index than the last checkpoint
+    for checkpoint_file in checkpoint_files[:-1]:
+        os.remove(os.path.join(checkpoint_dir, checkpoint_file))
+    

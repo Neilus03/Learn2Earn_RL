@@ -57,12 +57,3 @@ if __name__ == "__main__":
     dqn = DeepQNetwork(image_height=84, image_width=84, num_actions=4)
     print(dqn)
     print("Number of parameters:", sum(p.numel() for p in dqn.parameters() if p.requires_grad))
-    print("Number of layers:", len(list(dqn.parameters())))
-    print("Number of convolutional layers:", len(list(dqn.conv1.parameters())) + len(list(dqn.conv2.parameters())))
-    print("Number of fully connected layers:", len(list(dqn.fc1.parameters())) + len(list(dqn.fc2.parameters())))
-    print("Number of neurons in the first fully connected layer:", len(list(dqn.fc1.parameters())))
-    print("Number of neurons in the second fully connected layer:", len(list(dqn.fc2.parameters())))
-    print("Number of neurons in the convolutional layers:", len(list(dqn.conv1.parameters())) + len(list(dqn.conv2.parameters())))
-    print("Number of neurons in the convolutional layer 1:", len(list(dqn.conv1.parameters())))
-    print("Number of neurons in the convolutional layer 2:", len(list(dqn.conv2.parameters())))
-    

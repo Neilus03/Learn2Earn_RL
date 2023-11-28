@@ -5,21 +5,14 @@ from utils import get_epsilon, update_state_stack
 from checkpoint import save_checkpoint, load_last_checkpoint, remove_previous_checkpoints
 import config
 
+
 import numpy as np
 import wandb
 import gymnasium as gym
-import pygame
 
 # Initialize wandb for logging metrics
 if config.log_to_wandb:
     wandb.init(project="breakout-dqn1", entity="ai42")
-
-# Initialize pygame for rendering the Breakout game (this isn't helping currently)
-pygame.init()
-
-# Define a video directory for logging videos of the agent playing Breakout
-#video_dir = r'C:\Users\neild\OneDrive\Escritorio\Breakout_videos' # Set this to your preferred directory
-#os.makedirs(video_dir, exist_ok=True) # Make the video directory if it doesn't exist
 
 losses = [] # Initialize a list to store the losses of the training steps
 
@@ -32,8 +25,7 @@ def train():
     '''
     # Initialize the environment and the agent
     env = BreakoutEnvWrapper() # Create the Breakout environment
-    #the line below seems to be not needed
-    #env = gym.wrappers.RecordVideo(env, video_folder=video_dir, episode_trigger=lambda episode_id: True) # Record videos of the agent playing Breakout
+ 
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
                   replay_memory_capacity=config.replay_memory_size, 
@@ -52,6 +44,7 @@ def train():
         print("Checkpoint loaded successfully")
 
     best_reward = -np.inf # Initialize the best reward to -infinity 
+    last_5_episodes_rewards = [-5] * 5 # Initialize a list to store the rewards of the last 5 episodes and set all the rewards to 0 initially
     
     # Begin training loop over episodes
     for episode in range(config.num_episodes): 
@@ -108,17 +101,18 @@ def train():
         if episode % config.target_update == 0:
             agent.update_target_network()
 
+        last_5_episodes_rewards.append(episode_reward) # Append the episode reward to the last_5_episodes_mean_reward list
+        last_5_episodes_mean_reward = sum(last_5_episodes_rewards[-5:]) / 5 # Get the mean reward of the last 5 episodes
+         
         # Save checkpoints if the episode reward is better than the best reward so far
-        if episode_reward > best_reward:
+        if last_5_episodes_mean_reward > best_reward:
             save_checkpoint(agent, replay_memory, config.checkpoint_dir, f'checkpoint{episode}.pth')
             print(f"Checkpoint saved at episode {episode} with reward {episode_reward}")
-            remove_previous_checkpoints(config.checkpoint_dir)
+            # Update the best reward to the episode reward
             best_reward = episode_reward
-        
-        # Render the Breakout game (partida) on screen (currently failing for some reason)
-        
-        #SEEMS TO WORK WITHOUT THE LINE BELOW
-        #log_clear_video_directory(video_dir) # Clear the video directory and log the most recent video file to wandb
+            if config.free_checkpoint_memory:
+                remove_previous_checkpoints(config.checkpoint_dir)
+            
             
         # Get the total acumulated reward of all the episodes in the replay memory and log it to wandb
         total_reward = np.sum([experience.reward for experience in replay_memory.memory]) 

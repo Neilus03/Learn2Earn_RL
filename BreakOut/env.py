@@ -10,7 +10,7 @@ class BreakoutEnvWrapper:
     """
 
     def __init__(self, env_name='ALE/Breakout-v5',  max_episode_steps=1000):
-        self.env = gym.make(env_name) #(, render_mode='human')# Create the environment
+        self.env = gym.make(env_name, render_mode='human')# Create the environment
         self.env._max_episode_steps = max_episode_steps # Set the maximum number of steps in an episode
         self.render_mode = 'rgb_array' # Set the render mode to rgb_array
         self.metadata = self.env.metadata # Get the metadata of the underlying gymnasium environment
@@ -51,11 +51,7 @@ class BreakoutEnvWrapper:
         observation, reward, terminated, truncated, info = self.env.step(action) # Take an action in the environment and get the new observation, reward, and other info
         return self.preprocess(observation), reward, terminated, truncated, info # Preprocess the observation (change color space, resize, normalize) and return it, along with the reward, and other info
 
-    '''
-    def render(self):
-        """ Renders the environment on screen. """
-        self.env.render() # Render the environment on screen (currently failing for some reason)
-    '''
+
     def close(self):
         """ Close the environment. """
         self.env.close() # Close the environment
