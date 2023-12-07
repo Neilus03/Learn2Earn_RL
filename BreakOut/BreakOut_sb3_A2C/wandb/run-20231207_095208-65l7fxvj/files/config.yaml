@@ -1,0 +1,202 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.11.5
+    cli_version: 0.16.0
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1701939128.944504
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 22
+      - 23
+      - 35
+      4: 3.11.5
+      5: 0.16.0
+      8:
+      - 5
+      13: linux-x86_64
+algo:
+  desc: null
+  value: A2C
+policy_class:
+  desc: null
+  value: <class 'stable_baselines3.common.policies.ActorCriticCnnPolicy'>
+device:
+  desc: null
+  value: cuda
+verbose:
+  desc: null
+  value: 1
+policy_kwargs:
+  desc: null
+  value: '{''optimizer_class'': <class ''torch.optim.rmsprop.RMSprop''>, ''optimizer_kwargs'':
+    {''alpha'': 0.99, ''eps'': 1e-05, ''weight_decay'': 0}}'
+num_timesteps:
+  desc: null
+  value: 0
+_total_timesteps:
+  desc: null
+  value: 10000000.0
+_num_timesteps_at_start:
+  desc: null
+  value: 0
+seed:
+  desc: null
+  value: None
+action_noise:
+  desc: null
+  value: None
+start_time:
+  desc: null
+  value: 1701939131635879367
+learning_rate:
+  desc: null
+  value: 0.0007
+tensorboard_log:
+  desc: null
+  value: /home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir/a2c_breakout
+_last_obs:
+  desc: null
+  value: "[[[[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n\
+    \   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0\
+    \ 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0\
+    \ ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0\
+    \ 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n\
+    \   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0\
+    \ 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0\
+    \ ... 0 0 0]\n   [0 0 0 ... 0 0 0]]]\n\n\n [[[0 0 0 ... 0 0 0]\n   [0 0 0 ...\
+    \ 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0\
+    \ 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n\
+    \   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n  \
+    \ [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0\
+    \ ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ...\
+    \ 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n\
+    \   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]]\n\n\
+    \n [[[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n \
+    \  [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0\
+    \ ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ...\
+    \ 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n\
+    \   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n  \
+    \ [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0\
+    \ ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ...\
+    \ 0 0 0]\n   [0 0 0 ... 0 0 0]]]\n\n\n [[[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0\
+    \ 0]\n   [0 0 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n\
+    \   [0 0 0 ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0\
+    \ 0 ... 0 0 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0\
+    \ ... 0 0 0]]\n\n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0\
+    \ 0]\n   ...\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]\n\
+    \n  [[0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   ...\n \
+    \  [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]\n   [0 0 0 ... 0 0 0]]]]"
+_last_episode_starts:
+  desc: null
+  value: '[ True  True  True  True]'
+_last_original_obs:
+  desc: null
+  value: None
+_episode_num:
+  desc: null
+  value: 0
+use_sde:
+  desc: null
+  value: 'False'
+sde_sample_freq:
+  desc: null
+  value: -1
+_current_progress_remaining:
+  desc: null
+  value: 1.0
+_stats_window_size:
+  desc: null
+  value: 100
+ep_info_buffer:
+  desc: null
+  value: deque([], maxlen=100)
+ep_success_buffer:
+  desc: null
+  value: deque([], maxlen=100)
+_n_updates:
+  desc: null
+  value: 0
+_custom_logger:
+  desc: null
+  value: 'False'
+env:
+  desc: null
+  value: <stable_baselines3.common.vec_env.vec_transpose.VecTransposeImage object
+    at 0x7fdab7a3da50>
+_vec_normalize_env:
+  desc: null
+  value: None
+observation_space:
+  desc: null
+  value: Box(0, 255, (4, 84, 84), uint8)
+action_space:
+  desc: null
+  value: Discrete(4)
+n_envs:
+  desc: null
+  value: 4
+n_steps:
+  desc: null
+  value: 5
+gamma:
+  desc: null
+  value: 0.99
+gae_lambda:
+  desc: null
+  value: 1.0
+ent_coef:
+  desc: null
+  value: 0.0
+vf_coef:
+  desc: null
+  value: 0.5
+max_grad_norm:
+  desc: null
+  value: 0.5
+normalize_advantage:
+  desc: null
+  value: 'False'
+lr_schedule:
+  desc: null
+  value: <function constant_fn.<locals>.func at 0x7fdab7a86480>
+rollout_buffer:
+  desc: null
+  value: <stable_baselines3.common.buffers.RolloutBuffer object at 0x7fdab9672610>
+policy:
+  desc: null
+  value: "ActorCriticCnnPolicy(\n  (features_extractor): NatureCNN(\n    (cnn): Sequential(\n\
+    \      (0): Conv2d(4, 32, kernel_size=(8, 8), stride=(4, 4))\n      (1): ReLU()\n\
+    \      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))\n      (3): ReLU()\n\
+    \      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))\n      (5): ReLU()\n\
+    \      (6): Flatten(start_dim=1, end_dim=-1)\n    )\n    (linear): Sequential(\n\
+    \      (0): Linear(in_features=3136, out_features=512, bias=True)\n      (1):\
+    \ ReLU()\n    )\n  )\n  (pi_features_extractor): NatureCNN(\n    (cnn): Sequential(\n\
+    \      (0): Conv2d(4, 32, kernel_size=(8, 8), stride=(4, 4))\n      (1): ReLU()\n\
+    \      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))\n      (3): ReLU()\n\
+    \      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))\n      (5): ReLU()\n\
+    \      (6): Flatten(start_dim=1, end_dim=-1)\n    )\n    (linear): Sequential(\n\
+    \      (0): Linear(in_features=3136, out_features=512, bias=True)\n      (1):\
+    \ ReLU()\n    )\n  )\n  (vf_features_extractor): NatureCNN(\n    (cnn): Sequential(\n\
+    \      (0): Conv2d(4, 32, kernel_size=(8, 8), stride=(4, 4))\n      (1): ReLU()\n\
+    \      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))\n      (3): ReLU()\n\
+    \      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))\n      (5): ReLU()\n\
+    \      (6): Flatten(start_dim=1, end_dim=-1)\n    )\n    (linear): Sequential(\n\
+    \      (0): Linear(in_features=3136, out_features=512, bias=True)\n      (1):\
+    \ ReLU()\n    )\n  )\n  (mlp_extractor): MlpExtractor(\n    (policy_net): Sequential()\n\
+    \    (value_net): Sequential()\n  )\n  (action_net): Linear(in_features=512, out_features=4,\
+    \ bias=True)\n  (value_net): Linear(in_features=512, out_features=1, bias=True)\n\
+    )"
+_logger:
+  desc: null
+  value: <stable_baselines3.common.logger.Logger object at 0x7fdab7abe950>

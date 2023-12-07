@@ -7,12 +7,24 @@ import numpy as np
 import wandb
 from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
 
-'''
-The RewardLogger wrapper is used to log the rewards of each episode to wandb
-It makes sure that the rewards of each episode are stored in a list and that the current episode reward is reset
-'''
+
 class RewardLogger(gym.Wrapper):
+    '''
+    The RewardLogger wrapper is used to log the rewards of each episode to wandb
+    It makes sure that the rewards of each episode are stored in a list and that the current episode reward is reset
+    '''
     def __init__(self, env):
+        '''
+        Description:
+            The __init__ function is called when the RewardLogger wrapper is created for the first time,
+            it is used to initialize the RewardLogger wrapper with the environment that will be wrapped.
+            
+        Args:
+            env (gym.Env): The environment to be wrapped.
+            
+        Output:
+            None, initializes the RewardLogger wrapper.
+        '''
         super(RewardLogger, self).__init__(env)
         # Store the rewards of each episode
         self.episode_rewards = []
@@ -21,6 +33,21 @@ class RewardLogger(gym.Wrapper):
 
     # The step function is called every time the agent takes an action in the environment
     def step(self, action):
+        '''
+        Description:
+            The step function is called every time the agent takes an action in the environment.
+            It is used to update the current episode reward and store the episode reward when the episode is done.
+            
+        Args:
+            action (int): The action taken by the agent.
+            
+        Output:
+            obs (np.ndarray): The observation of the environment after taking the action the shape of the observation is (1, 84, 84).
+            reward (float): The reward of the agent after taking the action.
+            done (bool): A boolean that indicates if the episode is done.
+            truncated (bool): A boolean that indicates if the episode was truncated.
+            info (dict): A dictionary with extra information about the environment, like the lives of the agent.
+        '''
         # Call the step function of the environment and store the results
         obs, reward, done, truncated, info = self.env.step(action) 
         # Update the current episode reward
@@ -34,19 +61,53 @@ class RewardLogger(gym.Wrapper):
 
     # The reset function is called every time the environment is reset (at the beginning of each episode)
     def reset(self, **kwargs):
+        '''
+        Description:
+            The reset function is called every time the environment is reset (at the beginning of each episode).
+            
+        Args:
+            **kwargs: Variable length argument list.
+            
+        Output:
+            obs (np.ndarray): The observation of the environment after it is reset, the shape of the observation is (1, 84, 84).
+        '''
         return self.env.reset(**kwargs)
 
     # The get_episode_rewards function returns the rewards of each episode
     def get_episode_rewards(self):
+        '''
+        Description:
+            The get_episode_rewards function returns the rewards of each episode.
+            
+        Args:
+            None
+        
+        Output:
+            self.episode_rewards (list): A list with the rewards of the episode.
+        '''
         return self.episode_rewards
 
-'''
-The CustomWandbCallback is a callback* that logs the mean reward of the last 100 episodes to wandb.
-A callback is a function that is called at the end of each episode to perform some action,
-in this case, the action is logging the mean reward of the last 100 episodes to wandb.
-'''
+
 class CustomWandbCallback(BaseCallback):
+    '''
+    The CustomWandbCallback is a callback* that logs the mean reward of the last 100 episodes to wandb.
+    A callback is a function that is called at the end of each episode to perform some action,
+    in this case, the action is logging the mean reward of the last 100 episodes to wandb.
+    '''
     def __init__(self, check_freq, save_path, verbose=1):
+        '''
+        Description:
+            The __init__ function is called when the CustomWandbCallback is created for the first time,
+            it is used to initialize the CustomWandbCallback with the parameters that will be used.
+            
+        Args:
+            check_freq (int): The frequency at which the callback is called.
+            save_path (str): The path where the best model will be saved.
+            verbose (int): The verbosity level: 0 no output, 1 info, 2 debug.
+            
+        Output:
+            None, initializes the CustomWandbCallback.
+        '''
         super(CustomWandbCallback, self).__init__(verbose)
         # Define the frequency at which the callback is called
         self.check_freq = check_freq
@@ -58,11 +119,18 @@ class CustomWandbCallback(BaseCallback):
 
     def _on_step(self) -> bool:
         '''
-        The _on_step function is called at the end of each episode. 
-        It returns True if the callback should be called again, and False otherwise.
-        To do this, it checks if the number of calls to the callback is a multiple of the check_freq.
-        If it is, it computes the mean reward of the last 100 episodes and logs it to wandb.
-        It also saves the model if the mean reward is greater than the best mean reward.
+        Description:
+            The _on_step function is called at the end of each episode. 
+            It returns True if the callback should be called again, and False otherwise.
+            To do this, it checks if the number of calls to the callback is a multiple of the check_freq.
+            If it is, it computes the mean reward of the last 100 episodes and logs it to wandb.
+            It also saves the model if the mean reward is greater than the best mean reward.
+            
+        Args:
+            None
+            
+        Output:
+            True if the callback should be called again, and False otherwise.
         '''
         # Check if the number of calls to the callback is a multiple of the check_freq
         if self.n_calls % self.check_freq == 0:
@@ -97,7 +165,15 @@ class CustomWandbCallback(BaseCallback):
 
 def make_env(env_id, seed=0):
     '''
-    Function for creating the environment with the correct wrappers and rendering.
+    Description:
+        The make_env function is used to create the environment with the correct wrappers and rendering.
+        
+    Args:
+        env_id (str): The id of the environment.
+        seed (int): The seed of the environment.
+        
+    Output:
+        _init (function): The function that creates and initializes the environment.
     '''
     def _init():
         # Create the environment with render mode set to human
@@ -116,17 +192,18 @@ def make_env(env_id, seed=0):
 
 def unzip_file(zip_path, extract_to_folder):
     """
-    Unzips a zip file to a specified folder.
-
+    Description:
+        Unzips a zip file to a specified folder.
+        
     Args:
-    zip_path (str): The path to the zip file.
-    extract_to_folder (str): The folder to extract the files to.
+        zip_path (str): The path to the zip file.
+        extract_to_folder (str): The folder to extract the files to.
+        
+    Output:
+        None, unzips the zip file to the specified folder.
     """
     # Ensure the target folder exists
     os.makedirs(extract_to_folder, exist_ok=True)
     # Extract the zip file to the target folder
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to_folder)
-
-
-
