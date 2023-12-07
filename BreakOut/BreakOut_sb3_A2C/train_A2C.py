@@ -21,6 +21,7 @@ from utils import make_env, unzip_file, CustomWandbCallback, RewardLogger
 import os
 from stable_baselines3.common.utils import get_latest_run_id
 import tensorboard as tb
+from tqdm import tqdm
 
 
 '''
@@ -81,6 +82,11 @@ model = A2C(
 #Load the model if config.pretrained is set to True in config.py
 if config.pretrained:
     model = A2C.load(config.saved_model_path, env=env, verbose=config.verbose, tensorboard_log=config.log_dir)
+    #Unzip the file a2c_Breakout_1M.zip and store the unzipped files in the folder a2c_Breakout_unzipped
+    unzip_file(config.saved_model_path, config.unzip_file_path) 
+    model.policy.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.pth")))
+    model.policy.optimizer.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.optimizer.pth")))
+
 
 
 '''
@@ -93,9 +99,12 @@ Train the model and save it
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 #callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
 model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback])
+#Save the model 
+model.save(f"a2c_Breakout_10M_retrained3")
 
-#Save the model
-model.save("a2c_Breakout_10M")
+
+
+
 
 
 ''' 
