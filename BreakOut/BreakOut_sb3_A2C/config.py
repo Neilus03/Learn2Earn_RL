@@ -6,16 +6,16 @@ import torch
 '''FILE TO STORE ALL THE CONFIGURATION VARIABLES'''
 
 #pretrained is a boolean that indicates if a pretrained model will be loaded
-pretrained = False # Set to True if you want to load a pretrained model
+pretrained = True # Set to True if you want to load a pretrained model
 
 #check_freq is the frequency at which the callback is called, in this case, the callback is called every 2000 timesteps
 check_freq = 2000
 
 #save_path is the path where the best model will be saved
-save_path = '/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_1M_save_path'
+save_path = '/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_1M_save_path'
 
 #log_dir is the path where the logs will be saved
-log_dir = os.path.join('/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir', 'a2c_breakout')
+log_dir = '/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir'
 
 
 '''
@@ -88,7 +88,7 @@ _init_setup_model = True
 #Take into account that the number of timesteps is not the number of episodes, in a game like breakout, the agent takes an action every frame,
 # then the number of timesteps is the number of frames, which is the number of frames in 1 game multiplied by the number of games played.
 #The average number of frames in 1 game is 1000, so 1e7 timesteps is 1000 games more or less.
-total_timesteps = int(1e7)
+total_timesteps = int(7e7)
 
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 log_interval = 100
@@ -96,8 +96,8 @@ log_interval = 100
 '''
 Saved model path
 '''
-saved_model_path = "/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M.zip"
-unzip_file_path = "/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M_unzipped"
+saved_model_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M_retrained2.zip"
+unzip_file_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M_retrained2_unzipped"
 '''
 Environment variables
 '''
@@ -118,7 +118,7 @@ project_test = "breakout-a2c-test"
 entity = "ai42"
 
 #name is the name of the run in wandb
-name_train = "a2c_breakout{}".format(get_latest_run_id("/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir/a2c_breakout/"))
+name_train = "a2c_breakout{}".format(get_latest_run_id("/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir/a2c_breakout/"))
 name_test = "a2c_breakout_test"
 #notes is a description of the run
 notes = "a2c_breakout with parameters: {}".format(locals()) #locals() returns a dictionary with all the local variables, in this case, all the variables in this file
@@ -130,3 +130,5 @@ sync_tensorboard = True
 Test configuration
 '''
 test_episodes = 100
+
+
