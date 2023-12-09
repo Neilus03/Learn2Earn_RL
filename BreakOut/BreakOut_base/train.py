@@ -1,7 +1,7 @@
 from agent import Agent
 from env import BreakoutEnvWrapper
 from replay_memory import ReplayMemory
-from utils import get_epsilon, update_state_stack, prepopulate_replay_memory
+from utils import get_epsilon, update_state_stack
 from checkpoint import save_checkpoint, load_last_checkpoint, remove_previous_checkpoints
 import config
 
@@ -38,7 +38,7 @@ def train():
     replay_memory = ReplayMemory(config.replay_memory_size)
 
     # Prepopulate the replay memory with replay_memory_size experiences to start training the agent 
-    prepopulate_replay_memory(env, replay_memory, config.replay_memory_size, agent.action_space)
+    #prepopulate_replay_memory(env, replay_memory, config.replay_memory_size, agent.action_space)
     
     # Load a checkpoint if pretrained is True
     if config.pretrained:
@@ -100,7 +100,7 @@ def train():
             if replay_memory.can_provide_sample(agent.batch_size):
                 # Train the agent using a random batch of experiences from the replay memory and save the loss of the training step
                 # This is done by using the agent's learn() method, which returns the loss of the training step while training the agent
-                loss = agent.learn()
+                loss = agent.learn(env)
                 print(f"Loss: {loss}")
                 
                 if loss is not None:# Check if the loss is not None, if so, append the loss to the episode_losses list
@@ -115,6 +115,7 @@ def train():
         
         # Update the target network every target_update episodes 
         if episode % config.target_update == 0:
+            print("Updating target network...")
             agent.update_target_network()
 
 

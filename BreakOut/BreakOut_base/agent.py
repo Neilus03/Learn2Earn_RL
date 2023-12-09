@@ -3,12 +3,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 import random
 import config
-from utils import prepopulate_replay_memory
 if config.attention_model:
     from DQN_attention_model import DeepQNetwork
 else:
     from DQN_model import DeepQNetwork
-
 
 from replay_memory import ReplayMemory, Experience
 from env import BreakoutEnvWrapper
@@ -21,7 +19,7 @@ class Agent:
         initialize the agent.
         '''
         self.state_space = state_space # shape of the input image (F, 84, 84) in Breakout, where F is the number of stacked frames
-        self.action_space = action_space # The number of possible actions
+        self.action_space = action_space # The number of possible actions in the environment (4 in Breakout)
         self.replay_memory = ReplayMemory(replay_memory_capacity) # Create the replay memory with the specified capacity
         self.batch_size = batch_size # The size of the batch of experiences sampled from the replay memory
         self.gamma = gamma # The discount factor
@@ -44,9 +42,11 @@ class Agent:
         '''
         Description:
             Select an action using an epsilon-greedy policy.     
+            
         Parameters:
             state (numpy.ndarray): The current state of the environment.
             epsilon (float): The probability of selecting a random action.
+            
         Output:
             action (int): The selected action.
         '''
@@ -62,9 +62,9 @@ class Agent:
             # Select a random action
             action = random.randrange(self.action_space)
 
-        return action # Return the selected action
+        return action # Return the selected action [0: do nothing, 1: fire (start the game), 2: move right, 3: move left]
 
-    def learn(self):
+    def learn(self,env):
         '''
         Description:
             Train the policy network using a batch of experiences sampled from the replay memory, 
@@ -96,7 +96,7 @@ class Agent:
             '''
             Now it comes a key (but tricky) part of the DQN algorithm, which is calculating the expected Q-values.
             This is done by using the Bellman equation, which is:
-            Q(s, a) = r + (gamma * max(Q(s', a')) * (1 - done))
+            Q(s, a) = r + (gamma * max(Q(s', a')) * (1 - done)) #but done is a boolean, so we need to convert it to a number (0 or 1)
             where:
                 s is the current state
                 a is the action taken in the current state
@@ -108,7 +108,7 @@ class Agent:
                 formula source: https://www.youtube.com/watch?v=0Ey02HT_1Ho and https://www.wikiwand.com/en/Q-learning
             '''
             #In this case, we adapt the formula to the case of a batch of experiences:
-            expected_q_values = rewards + (self.gamma * next_q_values * (1 - dones))
+            expected_q_values = rewards + (self.gamma * next_q_values * (1 - dones.float())) # int(dones) is 0 if dones is False, and 1 if dones is True
             # where:
                 # rewards is a batch of rewards
                 # self.gamma is the discount factor
@@ -119,9 +119,10 @@ class Agent:
             loss = F.mse_loss(current_q_values, expected_q_values.unsqueeze(1)) #I use the mean squared error loss function as in the paper "Playing Atari with Deep Reinforcement Learning"
             
             # Debug prints
-            print(f"Current Q-values: {current_q_values}")
-            print(f"Expected Q-values: {expected_q_values}")
-            print(f"Loss: {loss}")
+            # Q(s, a) = r + (gamma * max(Q(s', a')) * (1 - done))
+            #print(f"Current Q-values: {current_q_values}") #Q-values calculated using the policy network
+            #print(f"Expected Q-values: {expected_q_values}") #Q-values calculated using the target network
+            #print(f"Loss: {loss}")
             
             # Check if loss is None or not a number
             if loss is None or torch.isnan(loss).any():
@@ -140,7 +141,10 @@ class Agent:
             return loss.item() # Return the loss to track the training progress
         
         else:
+            # If the replay memory can't provide a batch of experiences for training, PREPOPULATE THE REPLAY MEMORY
             print("Not enough experiences in the replay memory to train the DQN.")
+            self.replay_memory.prepopulate_replay_memory(env, self.batch_size, self.action_space)
+            
             
     def update_target_network(self):
         '''

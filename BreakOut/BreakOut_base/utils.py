@@ -33,45 +33,19 @@ def update_state_stack(state_stack, new_state):
     '''
     # Update and maintain the stack of states by removing the oldest state and adding the new state at the end
     updated_stack = np.concatenate([state_stack[1:], np.expand_dims(new_state, 0)], axis=0) 
-    return updated_stack
+    return updated_stack # Returns a new array with the new state at the end with shape (4, 84, 84)
 
-def prepopulate_replay_memory(env, replay_memory, prepopulate_steps, action_space):
-    '''
-    Description:
-        Prepopulate the replay memory with random experiences. This is done to avoid the problem of
-        the agent learning from a small number of experiences at the beginning of the training.
-        If the agent learns from a small number of experiences at the beginning of the training,
-        it will not learn well because it will not have enough experiences to learn from.
-        
-    Parameters:
-        env (gym environment): The environment.
-        replay_memory (ReplayMemory object): The replay memory.
-        prepopulate_steps (int): The number of experiences to prepopulate the replay memory.
-        action_space (int): The number of possible actions.
-        
-    Returns:
-        None, it populates the replay memory with random experiences in place.
-    '''
-    # Reset the environment and stack the initial state 4 times
-    state = env.reset()
-    state = np.stack([state] * 4, axis=0)  # Initial state stack
-    
-    # Prepopulate the replay memory with random experiences
-    for _ in range(prepopulate_steps):
-        
-        # Select a random action
-        action = random.randrange(action_space)
-        # Perform the action and observe the next state, reward, terminated and truncated
-        next_state, reward, terminated, truncated, info = env.step(action)
-        
-        # Stack the next state and update the state stack
-        next_state_stack = update_state_stack(state, next_state)
-        
-        # Push the experience to the replay memory for populating it
-        replay_memory.push(state, action, reward, next_state_stack, terminated, truncated)
-        
-        # Update the state for the next iteration
-        state = next_state_stack
-            
-    print(f"Prepopulated with {len(replay_memory.memory)} experiences.")
-    
+'''
+# Tests to populate the replay memory
+if __name__ == "__main__":
+    # Example usage of the ReplayMemory class:
+    from env import BreakoutEnvWrapper
+    from replay_memory import ReplayMemory
+    env = BreakoutEnvWrapper()
+    replay_memory = ReplayMemory(capacity=10000)
+    replay_memory.prepopulate_replay_memory(env=env, replay_memory=replay_memory, prepopulate_steps=100, action_space=env.action_space)
+    env.close()
+    print("Memory size:", len(replay_memory.memory))
+    print("Push count:", replay_memory.push_count)
+    print("Memory:", replay_memory.memory)
+'''

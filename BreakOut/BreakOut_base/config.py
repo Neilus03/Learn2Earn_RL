@@ -4,7 +4,7 @@ import torch
 lr = 0.003
 gamma = 0.99
 batch_size = 64
-replay_memory_size = 10000
+replay_memory_size = 100
 target_update = 10
 epsilon_start = 1.0
 epsilon_final = 0.01
@@ -26,4 +26,4 @@ attention_model = True # Set to True to use the attention model, False to use th
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #CHECKPOINTS
-checkpoint_dir = '/home/ndelafuente/Learn2Earn_RL/BreakOut/checkpoints'
+checkpoint_dir = '/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_base/checkpoints'

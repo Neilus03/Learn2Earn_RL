@@ -6,7 +6,7 @@ import torch.nn.functional as F
 class DeepQNetwork(nn.Module):
     """ Deep Q-Network using Convolutional Neural Network. """
     
-    def __init__(self, image_height, image_width, num_actions = 4):
+    def __init__(self, image_height, image_width, num_actions):
         """
         Initialize the DQN.
         
@@ -40,7 +40,7 @@ class DeepQNetwork(nn.Module):
         x = F.relu(self.conv2(x))
         x = x.view(x.size(0), -1) # Flatten the tensor for the FC layer
         x = F.relu(self.fc1(x))
-        return self.fc2(x)
+        return self.fc2(x) #Output shape: [batch_size, num_actions]
     
     def _feature_size(self, height, width):
         """ Calculate the size of the features after convolution layers. """
