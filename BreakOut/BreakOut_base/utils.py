@@ -18,7 +18,8 @@ def get_epsilon(episode):
     Returns:
         epsilon (float): The epsilon value for the current episode.
     '''
-    # Define an epsilon decay over episodes
+    # Define an epsilon decay over episodes, which is used to decay the epsilon value over episodes
+    
     epsilon = config.epsilon_final + (config.epsilon_start - config.epsilon_final) * \
               math.exp(-1. * episode / config.epsilon_decay)
     return epsilon

@@ -23,7 +23,7 @@ def train():
             and training the agent using the collected experiences.
     '''
     # Initialize the environment and the agent
-    env = BreakoutEnvWrapper() # Create the Breakout environment
+    env = BreakoutEnvWrapper()# Create the Breakout environment
  
     agent = Agent(state_space=(4, 84, 84), 
                   action_space=env.action_space, 
@@ -101,8 +101,8 @@ def train():
                 # Train the agent using a random batch of experiences from the replay memory and save the loss of the training step
                 # This is done by using the agent's learn() method, which returns the loss of the training step while training the agent
                 loss = agent.learn(env)
-                print(f"Loss: {loss}")
                 
+
                 if loss is not None:# Check if the loss is not None, if so, append the loss to the episode_losses list
                     episode_losses.append(loss)# Append the loss of the training step to the losses list
             else:
@@ -111,7 +111,8 @@ def train():
             # Check if the episode is terminated or truncated, if so, break the episode loop
             if terminated or truncated:
                 break
-        
+            
+        print(f"Episode: {episode} Episode Reward: {episode_reward} Episode Loss: {np.mean(episode_losses)}")
         
         # Update the target network every target_update episodes 
         if episode % config.target_update == 0:

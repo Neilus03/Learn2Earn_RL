@@ -27,6 +27,12 @@ class Agent:
         self.target_update = target_update # The number of episodes between updating the target network
         self.device = device # The device to use for training the DQN (cpu or gpu)
         self.policy_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The policy network used to select actions
+        
+        #initialize the policy network with the weights of the xavier uniform distribution
+        for param in self.policy_net.parameters():
+            if len(param.shape) > 1:
+                torch.nn.init.xavier_uniform_(param)
+        
         self.target_net = DeepQNetwork(state_space[1], state_space[2], action_space).to(device) # The target network used to calculate the Q-values and stabilize the training
         self.target_net.load_state_dict(self.policy_net.state_dict()) # Initialize the weights of the target network to be the same as the policy network
         self.target_net.eval() # Target net is not trained, so we set it to evaluation mode
@@ -79,19 +85,19 @@ class Agent:
             # Transpose the batch of experiences to get:
             batch = Experience(*zip(*experiences))
 
-            states = torch.tensor(batch.state, device=self.device, dtype=torch.float32) # a batch of states
-            actions = torch.tensor(batch.action, device=self.device, dtype=torch.int64) # a batch of actions
-            rewards = torch.tensor(batch.reward, device=self.device, dtype=torch.float32) # a batch of rewards
-            next_states = torch.tensor(batch.next_state, device=self.device, dtype=torch.float32) # a batch of next states
-            terminateds = torch.tensor(batch.terminated, device=self.device, dtype=torch.bool) # a batch of terminated flags
-            truncateds = torch.tensor(batch.truncated, device=self.device, dtype=torch.bool) # a batch of truncated flags
+            states = torch.tensor(np.array(batch.state), device=self.device, dtype=torch.float32) # a batch of states
+            actions = torch.tensor(np.array(batch.action), device=self.device, dtype=torch.int64) # a batch of actions
+            rewards = torch.tensor(np.array(batch.reward), device=self.device, dtype=torch.float32) # a batch of rewards
+            next_states = torch.tensor(np.array(batch.next_state), device=self.device, dtype=torch.float32) # a batch of next states
+            terminateds = torch.tensor(np.array(batch.terminated), device=self.device, dtype=torch.bool) # a batch of terminated flags
+            truncateds = torch.tensor(np.array(batch.truncated), device=self.device, dtype=torch.bool) # a batch of truncated flags
             dones = terminateds | truncateds # dones is True if the episode is terminated or truncated, otherwise it is False, this is done with a logical or (|)
             
             # Calculate the Q-values for the current states using the policy network
-            current_q_values = self.policy_net(states).gather(1, actions.unsqueeze(-1)) # gather() is used to select the Q-values of the actions taken in the current states
+            current_q_values = self.policy_net(states).gather(1, actions.unsqueeze(-1)).to(self.device) # gather() is used to select the Q-values of the actions taken in the current states
             
             # Calculate the Q-values for the next states using the target network
-            next_q_values = self.target_net(next_states).max(1)[0].detach() # detach() is used to prevent the gradients from flowing into the target network
+            next_q_values = self.target_net(next_states).max(1)[0].detach().to(self.device) # detach() is used to prevent the gradients from flowing into the target network
             
             '''
             Now it comes a key (but tricky) part of the DQN algorithm, which is calculating the expected Q-values.
@@ -108,7 +114,7 @@ class Agent:
                 formula source: https://www.youtube.com/watch?v=0Ey02HT_1Ho and https://www.wikiwand.com/en/Q-learning
             '''
             #In this case, we adapt the formula to the case of a batch of experiences:
-            expected_q_values = rewards + (self.gamma * next_q_values * (1 - dones.float())) # int(dones) is 0 if dones is False, and 1 if dones is True
+            expected_q_values = rewards + (self.gamma * next_q_values * (1 - dones.float())) # torch's float() method is used to convert the boolean dones to numbers (0 or 1)
             # where:
                 # rewards is a batch of rewards
                 # self.gamma is the discount factor
@@ -120,6 +126,7 @@ class Agent:
             
             # Debug prints
             # Q(s, a) = r + (gamma * max(Q(s', a')) * (1 - done))
+            
             #print(f"Current Q-values: {current_q_values}") #Q-values calculated using the policy network
             #print(f"Expected Q-values: {expected_q_values}") #Q-values calculated using the target network
             #print(f"Loss: {loss}")
