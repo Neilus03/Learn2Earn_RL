@@ -37,8 +37,10 @@ def train():
     # Initialize replay memory with a capacity of replay_memory_size
     replay_memory = ReplayMemory(config.replay_memory_size)
 
-    # Prepopulate the replay memory with replay_memory_size experiences to start training the agent 
-    #prepopulate_replay_memory(env, replay_memory, config.replay_memory_size, agent.action_space)
+    # Prepopulate the replay memory with replay_memory_size experiences to start training the agent
+    print("Prepopulating replay memory...")
+    while (replay_memory.can_provide_sample(agent.batch_size) == False): # Check if the replay memory can provide a random batch of experiences for training
+        replay_memory.prepopulate_replay_memory(env, agent.batch_size, agent.action_space)
     
     # Load a checkpoint if pretrained is True
     if config.pretrained:
@@ -102,7 +104,6 @@ def train():
                 # This is done by using the agent's learn() method, which returns the loss of the training step while training the agent
                 loss = agent.learn(env)
                 
-
                 if loss is not None:# Check if the loss is not None, if so, append the loss to the episode_losses list
                     episode_losses.append(loss)# Append the loss of the training step to the losses list
             else:
@@ -156,6 +157,7 @@ def train():
 
         if episode %1000 == 0:
             print(f"Episode: {episode} Episode Reward: {episode_reward}")
+        #break # Debugging
         
     env.close() # Close the environment
     if config.log_to_wandb:

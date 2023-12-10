@@ -37,7 +37,6 @@ def update_state_stack(state_stack, new_state):
     return updated_stack # Returns a new array with the new state at the end with shape (4, 84, 84)
 
 '''
-# Tests to populate the replay memory
 if __name__ == "__main__":
     # Example usage of the ReplayMemory class:
     from env import BreakoutEnvWrapper
