@@ -6,7 +6,7 @@ import torch
 '''FILE TO STORE ALL THE CONFIGURATION VARIABLES'''
 
 #pretrained is a boolean that indicates if a pretrained model will be loaded
-pretrained = False # Set to True if you want to load a pretrained model
+pretrained = True # Set to True if you want to load a pretrained model
 
 #check_freq is the frequency at which the callback is called, in this case, the callback is called every 2000 timesteps
 check_freq = 2000
@@ -25,7 +25,7 @@ Hyperparameters of the model {learning_rate, gamma, device, n_steps, gae_lambda,
 policy = "CnnPolicy"
 
 #learning_rate is the learning rate of the model
-learning_rate = 2.5e-4
+learning_rate = 2.5e-3
 
 #gamma is the discount factor
 gamma = 0.99
@@ -111,8 +111,10 @@ log_interval = 100
 '''
 Saved model path
 '''
-saved_model_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_1M.zip"
-unzip_file_path =  "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_unzipped"
+
+#for the path to be shorter just put "./a2c_Breakout_1M.zip" instead of the full path
+saved_model_path = "./PPO_Breakout_7M.zip"
+unzip_file_path =  "./PPO_Breakout_7M_unzipped"
 
 '''
 Environment variables
