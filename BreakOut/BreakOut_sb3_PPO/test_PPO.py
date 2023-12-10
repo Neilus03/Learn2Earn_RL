@@ -1,47 +1,58 @@
+'''
+Code for testing the trained PPO agent in the Breakout environment using stable baselines 3's PPO
+implementation and logging the results to wandb.
+
+Note: For understanding the code, it is recommended to read the documentation of stable baselines 3's PPO implementation and to
+understand the parameters of the model, go to config.py and read the comments of each parameter.
+'''
+
+'''
+Import the necessary libraries and modules
+'''
 from stable_baselines3 import PPO
-from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
-from stable_baselines3.common.atari_wrappers import AtariWrapper
-import gymnasium as gym
 import torch
-import config
 import wandb
-from wandb.integration.sb3 import WandbCallback
-from utils import make_env, unzip_file, CustomWandbCallback, RewardLogger
 import os
-from stable_baselines3.common.utils import get_latest_run_id
 import tensorboard as tb
+import config
+from utils import make_env, unzip_file
 
-wandb.init(project="breakout-PPO-test", entity= "ai42", sync_tensorboard=True)
 
-"""
-Test the model
-"""
+'''
+Set up wandb
+'''
+wandb.init(project=config.name_test, entity= config.entity, sync_tensorboard=config.sync_tensorboard, name=config.name_test, notes=config.notes)
 
-#Unzip the file a2c_Breakout_1M.zip and store the unzipped files in the folder a2c_Breakout_unzipped
-unzip_file('PPO_Breakout_1M.zip', 'PPO_Breakout_1M_unzipped') 
+
+'''
+Set up the environment and the model to test
+'''
+#Unzip the file PPO_Breakout_1M.zip and store the unzipped files in the folder PPO_Breakout_unzipped
+unzip_file(config.saved_model_path, config.unzip_file_path) 
            
 #We start with a single environment for Breakout with render mode set to human
 env = make_env("BreakoutNoFrameskip-v4") 
 #We then wrap the environment with the DummyVecEnv wrapper which converts the environment to a single vectorized environment
 env = DummyVecEnv([env]) # Output shape: (1, 84, 84)
 #Finally, we wrap the environment with the VecFrameStack wrapper which stacks the observations over the last 4 frames
-env = VecFrameStack(env, n_stack=4) # Output shape: (4, 84, 84)
-
-
+env = VecFrameStack(env, n_stack=config.n_stack) # Output shape: (4, 84, 84)
 
 # Create the model
-model = PPO("CnnPolicy", env, verbose=1)
+model = PPO(policy = config.policy
+            ,env = env
+            ,verbose = config.verbose)
 
 # Load the model components, including the policy network and the value network
-model.policy.load_state_dict(torch.load("/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_1M_unzipped/policy.pth"))
-model.policy.optimizer.load_state_dict(torch.load("/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_1M_unzipped/policy.optimizer.pth"))
+model.policy.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.pth")))
+model.policy.optimizer.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.optimizer.pth")))
 
-# Visualize the gameplay
-num_episodes = 100
 
+'''
+Test the model in the environment and log the results to wandb
+'''
 # Run the episodes and render the gameplay
-for episode in range(num_episodes):
+for episode in range(config.test_episodes):
     # Reset the environment and stack the initial state 4 times
     obs = env.reset()#obs = np.stack([obs] * 4, axis=0)  # Initial state stack
     done = False
@@ -58,6 +69,11 @@ for episode in range(num_episodes):
     # Log the total reward of the episode to wandb
     wandb.log({'test_episode_reward': episode_reward, 'test_episode': episode})
 
-# Close the environment and finish the logging
+
+'''
+Close the environment and finish the logging
+'''
 env.close()
 wandb.finish()
+
+

@@ -91,8 +91,6 @@ class CustomWandbCallback(BaseCallback):
         return True
 
 
-
-
 def make_env(env_id, seed=0):
     '''
     Function for creating the environment with the correct wrappers and rendering.

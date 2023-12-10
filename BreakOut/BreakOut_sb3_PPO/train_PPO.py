@@ -10,47 +10,77 @@ from wandb.integration.sb3 import WandbCallback
 from utils import make_env, unzip_file, CustomWandbCallback, RewardLogger
 import os
 from stable_baselines3.common.utils import get_latest_run_id
-import tensorboard as tb
 
+'''
+Set up the appropriate directories for logging and saving the model
+'''
+os.makedirs(config.log_dir, exist_ok=True)
+os.makedirs(config.save_path, exist_ok=True)
 
-
-log_dir = os.path.join('/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/log_dir', 'PPO_breakout')
-os.makedirs(log_dir, exist_ok=True)
-
-#check_freq is the frequency at which the callback is called, in this case, the callback is called every 1000 timesteps
-check_freq = 2000
-#save_path is the path where the best model will be saved
-save_path = '/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_1M_save_path'
-#Create the folder where the best model will be saved if it does not exist
-os.makedirs(save_path, exist_ok=True)
 #Create the callback that logs the mean reward of the last 100 episodes to wandb
-custom_callback = CustomWandbCallback(check_freq, save_path)
-
+custom_callback = CustomWandbCallback(config.check_freq, config.save_path)
 
 
 '''
 Set up loging to wandb
 '''
 #Set wandb to log the training process
-wandb.init(project="breakout-PPO", entity= "ai42", sync_tensorboard=True)
+wandb.init(project=config.project_train, entity = config.entity, name=config.name_train, notes=config.notes, sync_tensorboard=config.sync_tensorboard)
 #wandb_callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
 wandb_callback = WandbCallback()
+
 
 '''
 Set up the environment
 '''
 # Create multiple environments and wrap them correctly
-env = make_atari_env("BreakoutNoFrameskip-v4", n_envs=4, seed=0)
-env = VecFrameStack(env, n_stack=4)
+env = make_atari_env("BreakoutNoFrameskip-v4", n_envs=config.n_envs, seed=config.seed)
+env = VecFrameStack(env, n_stack=config.n_stack)
+
 
 '''
 Set up the model
 '''
-model = PPO("CnnPolicy", env, verbose=2, tensorboard_log=log_dir,
-            learning_rate=0.0003, n_steps=2048, batch_size=64, n_epochs=10, clip_range=0.2)
+#Create the model with the parameters specified in config.py, go to config.py to see the meaning of each parameter in detail
+model = PPO(policy=config.policy
+            ,env=env
+            ,learning_rate=config.learning_rate
+            ,n_steps=config.n_steps
+            ,batch_size=config.batch_size
+            ,n_epochs=config.n_epochs
+            ,gamma=config.gamma            
+            ,gae_lambda=config.gae_lambda
+            ,clip_range=config.clip_range
+            ,clip_range_vf=config.clip_range_vf
+            ,normalize_advantage=config.normalize_advantage
+            ,ent_coef=config.ent_coef
+            ,vf_coef=config.vf_coef
+            ,max_grad_norm=config.max_grad_norm
+            ,use_sde=config.use_sde
+            ,sde_sample_freq=config.sde_sample_freq
+            #,rollout_buffer_class=config.rollout_buffer_class
+            #,rollout_buffer_kwargs=config.rollout_buffer_kwargs
+            ,target_kl=config.target_kl
+            ,stats_window_size=config.stats_window_size
+            ,tensorboard_log=config.log_dir
+            ,policy_kwargs=config.policy_kwargs
+            ,verbose=config.verbose
+            ,seed=config.seed
+            ,device=config.device
+            ,_init_setup_model=config._init_setup_model
+            )
 
+print("model in device: ", model.device)
+
+#Load the model if config.pretrained is set to True in config.py
 if config.pretrained:
-    model = PPO.load("/home/ndelafuente/Learn2Earn_RL/BreakOut/BreakOut_sb3_PPO/PPO_Breakout_1M.zip", env=env, verbose=1, tensorboard_log=log_dir)
+    model = PPO.load(config.saved_model_path, env=env, verbose=config.verbose, tensorboard_log=config.log_dir)
+    #Unzip the file a2c_Breakout_1M.zip and store the unzipped files in the folder a2c_Breakout_unzipped
+    unzip_file(config.saved_model_path, config.unzip_file_path) 
+    model.policy.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.pth")))
+    model.policy.optimizer.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.optimizer.pth")))
+
+
 
 '''
 Train the model and save it
@@ -61,11 +91,13 @@ Train the model and save it
 #The average number of frames in 1 game is 1000, so 1e6 timesteps is 1000 games more or less.
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 #callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
-model.learn(total_timesteps=1e5, log_interval=100, callback=[wandb_callback, custom_callback])
+model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback], progress_bar=True)
+#Save the model 
+model.save(f"a2c_Breakout_10M_ppo")
 
-#Save the model
-model.save("PPO_Breakout_1M")
 
-# Close the environment and finish the logging
+''' 
+Close the environment and finish the logging
+'''
 env.close()
 wandb.finish()
