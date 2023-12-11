@@ -98,13 +98,9 @@ Train the model and save it
 #The average number of frames in 1 game is 1000, so 1e6 timesteps is 1000 games more or less.
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 #callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
-model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback])
+model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback], progress_bar=True)
 #Save the model 
 model.save(f"a2c_Breakout_10M_retrained3")
-
-
-
-
 
 
 ''' 

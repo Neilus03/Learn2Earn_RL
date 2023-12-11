@@ -5,7 +5,7 @@ import zipfile
 from stable_baselines3.common.callbacks import BaseCallback
 import numpy as np
 import wandb
-from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 
 class RewardLogger(gym.Wrapper):
@@ -151,7 +151,7 @@ class CustomWandbCallback(BaseCallback):
                 # Log the mean reward of the last 100 episodes to wandb
                 wandb.log({'mean_reward': mean_reward, 'steps': self.num_timesteps})
 
-                # Save the best model
+                # Save the best model  
                 if mean_reward > self.best_mean_reward:
                     self.best_mean_reward = mean_reward
                     self.model.save(os.path.join(self.save_path, 'best_model'))

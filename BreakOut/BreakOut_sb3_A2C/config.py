@@ -6,7 +6,7 @@ import torch
 '''FILE TO STORE ALL THE CONFIGURATION VARIABLES'''
 
 #pretrained is a boolean that indicates if a pretrained model will be loaded
-pretrained = True # Set to True if you want to load a pretrained model
+pretrained = False # Set to True if you want to load a pretrained model
 
 #check_freq is the frequency at which the callback is called, in this case, the callback is called every 2000 timesteps
 check_freq = 2000
@@ -25,7 +25,7 @@ Hyperparameters of the model {learning_rate, gamma, device, n_steps, gae_lambda,
 policy = "CnnPolicy"
 
 #learning_rate is the learning rate of the model
-learning_rate = 0.0005
+learning_rate = 5e-4
 
 #gamma is the discount factor
 gamma = 0.99
@@ -34,7 +34,7 @@ gamma = 0.99
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 #n_steps is the number of steps taken by the model before updating the parameters
-n_steps = 5
+n_steps = 24
 
 #gae_lambda is the lambda parameter of the generalized advantage estimation, set to 1 to disable it
 gae_lambda = 1
@@ -75,7 +75,7 @@ tensorboard_log = log_dir
 policy_kwargs = None
 
 #verbose is the verbosity level: 0 no output, 1 info, 2 debug
-verbose = 1
+verbose = 2
 
 #seed is the seed for the pseudo random number generator used by the model. It is set to None to use a random seed,
 # and set to 0 to use a fixed seed for reproducibility
@@ -88,7 +88,7 @@ _init_setup_model = True
 #Take into account that the number of timesteps is not the number of episodes, in a game like breakout, the agent takes an action every frame,
 # then the number of timesteps is the number of frames, which is the number of frames in 1 game multiplied by the number of games played.
 #The average number of frames in 1 game is 1000, so 1e7 timesteps is 1000 games more or less.
-total_timesteps = int(7e7)
+total_timesteps = int(7e6)
 
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 log_interval = 100
@@ -111,14 +111,14 @@ n_envs = 4
 Wandb configuration
 '''
 #project is the name of the project in wandb
-project_train = "breakout-a2c"
+project_train = "BREAKOUT_SB3_BENCHMARK"
 project_test = "breakout-a2c-test"
 
 #entity is the name of the team in wandb
 entity = "ai42"
 
 #name is the name of the run in wandb
-name_train = "a2c_breakout{}".format(get_latest_run_id("/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/log_dir/a2c_breakout/"))
+name_train = "a2c_breakout_1"
 name_test = "a2c_breakout_test"
 #notes is a description of the run
 notes = "a2c_breakout with parameters: {}".format(locals()) #locals() returns a dictionary with all the local variables, in this case, all the variables in this file
