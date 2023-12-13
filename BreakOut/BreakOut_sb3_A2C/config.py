@@ -25,7 +25,8 @@ Hyperparameters of the model {learning_rate, gamma, device, n_steps, gae_lambda,
 policy = "CnnPolicy"
 
 #learning_rate is the learning rate of the model
-learning_rate = 5e-4
+learning_rate =5e-4   #first trial: 5e-4   #second trial: 1e-4  #third trial: 1e-3  #fourth trial: 5e-5 #fifth trial: 5e-5 gamma = 0.90 #sixth trial: 1e-4 gamma = 0.90 #seventh trial: 5e-4 gamma = 0.90
+
 
 #gamma is the discount factor
 gamma = 0.99
@@ -88,7 +89,7 @@ _init_setup_model = True
 #Take into account that the number of timesteps is not the number of episodes, in a game like breakout, the agent takes an action every frame,
 # then the number of timesteps is the number of frames, which is the number of frames in 1 game multiplied by the number of games played.
 #The average number of frames in 1 game is 1000, so 1e7 timesteps is 1000 games more or less.
-total_timesteps = int(7e6)
+total_timesteps = int(3e7)
 
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 log_interval = 100
@@ -96,8 +97,8 @@ log_interval = 100
 '''
 Saved model path
 '''
-saved_model_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M_retrained2.zip"
-unzip_file_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_A2C/a2c_Breakout_10M_retrained2_unzipped"
+saved_model_path = "./a2c_Breakout_30M_lr_5e-4_gamma_90.zip"
+unzip_file_path = "./a2c_Breakout_30M_lr_5e-4_gamma_90_unzipped"
 '''
 Environment variables
 '''
@@ -118,7 +119,7 @@ project_test = "breakout-a2c-test"
 entity = "ai42"
 
 #name is the name of the run in wandb
-name_train = "a2c_breakout_1"
+name_train = "a2c_breakout_lr_5e-4_gamma_90"
 name_test = "a2c_breakout_test"
 #notes is a description of the run
 notes = "a2c_breakout with parameters: {}".format(locals()) #locals() returns a dictionary with all the local variables, in this case, all the variables in this file
