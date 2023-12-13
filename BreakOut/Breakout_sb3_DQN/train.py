@@ -88,7 +88,7 @@ Train the model and save it
 #callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
 model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback], progress_bar=True)
 #Save the model 
-model.save(f"DQN_Breakout_7M_retrained.zip")
+model.save(config.saved_model_path[:-4]) #remove the .zip extension from the path
 
 ''' 
 Close the environment and finish the logging
