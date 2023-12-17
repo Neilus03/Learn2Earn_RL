@@ -102,4 +102,4 @@ Close the environment and finish the logging
 '''
 env.close()
 if config.log_to_wandb:
-    wandb.finish()
+    wandb.finish() 
