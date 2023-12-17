@@ -7,30 +7,18 @@ class DeepQNetwork(nn.Module):
     """ Deep Q-Network using Convolutional Neural Network. """
     
     def __init__(self, image_height, image_width, num_actions):
-        """
-        Initialize the DQN.
-        
-        Parameters:
-            image_height (int): The height of the input image.
-            image_width (int): The width of the input image. 
-                    
-            #In the paper "Playing Atari with Deep Reinforcement Learning" the input image is 84x84 pixels.
-        
-        num_actions (int): The number of possible actions, in Breakout it is 4.                  
-            #Actions in the Breakout environment: [0: do nothing, 1: fire (start the game), 2: move right, 3: move left]
-        """
         super(DeepQNetwork, self).__init__() # Call the constructor of the parent class
-        
         
         # The convolutional layers below are used to extract features from the input image.
         # Transforming the input image of shape (4, 84, 84) to a feature map of shape (32, 9, 9).
-    
         self.conv1 = nn.Conv2d(in_channels=4, out_channels=16, kernel_size=8, stride=4) # 4 input channels because of the 4 stacked frames. shape after conv1: (16, 20, 20)
         self.conv2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=4, stride=2) # 32 output channels because of the 32 filters. shape after conv2: (32, 9, 9)
         
-        # Fully connected layers
+        
         # Calculate the size of the output from the last convolutional layer.
         self.feature_size = self._feature_size(image_height, image_width) # 32 * 9 * 9 = 2592
+        
+        # Fully connected layers
         self.fc1 = nn.Linear(in_features=self.feature_size, out_features=256) # 256 neurons in the first FC layer
         self.fc2 = nn.Linear(in_features=256, out_features=num_actions) # 4 neurons in the second FC layer (one for each action)
 
@@ -51,8 +39,11 @@ class DeepQNetwork(nn.Module):
         
         #For a 84x84 input image the output size is 2592.
 
+'''
+Below is the code for the instantiation of the DQN model as an example.
+'''
+
 # Example instantiation:
-# dqn = DeepQNetwork(image_height=84, image_width=84, num_actions=4)
 if __name__ == "__main__":
     dqn = DeepQNetwork(image_height=84, image_width=84, num_actions=4)
     print(dqn)

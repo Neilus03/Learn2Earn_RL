@@ -31,21 +31,15 @@ def update_state_stack(state_stack, new_state):
         This is done by concatenating the state_stack without the oldest state and the new state.
         This is useful because we need to stack the states to feed them to the DQN, and we need to update the stack
         so that the DQN can learn from the most recent states.
+    
+    parameters:
+        state_stack (numpy array): The stack of states with shape (4, 84, 84).
+        new_state (numpy array): The new state with shape (84, 84).
+    
+    Returns:
+        updated_stack (numpy array): The updated stack of states with shape (4, 84, 84).
     '''
     # Update and maintain the stack of states by removing the oldest state and adding the new state at the end
     updated_stack = np.concatenate([state_stack[1:], np.expand_dims(new_state, 0)], axis=0) 
     return updated_stack # Returns a new array with the new state at the end with shape (4, 84, 84)
 
-'''
-if __name__ == "__main__":
-    # Example usage of the ReplayMemory class:
-    from env import BreakoutEnvWrapper
-    from replay_memory import ReplayMemory
-    env = BreakoutEnvWrapper()
-    replay_memory = ReplayMemory(capacity=10000)
-    replay_memory.prepopulate_replay_memory(env=env, replay_memory=replay_memory, prepopulate_steps=100, action_space=env.action_space)
-    env.close()
-    print("Memory size:", len(replay_memory.memory))
-    print("Push count:", replay_memory.push_count)
-    print("Memory:", replay_memory.memory)
-'''

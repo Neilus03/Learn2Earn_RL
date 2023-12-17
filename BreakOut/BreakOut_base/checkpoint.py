@@ -4,7 +4,15 @@ import os
 
 def save_checkpoint(agent, memory, checkpoint_dir, filename):
     '''
-    Save the agent's DQN and the replay memory to a checkpoint file.
+    Description:
+        Save the agent's DQN and the replay memory into a checkpoint file.
+    Arguments:
+        agent: the agent to be saved
+        memory: the replay memory to be saved
+        checkpoint_dir: the directory where the checkpoint file will be saved
+        filename: the name of the checkpoint file
+    Output:
+        None, but the checkpoint file will be saved in the checkpoint_dir
     '''
     # Ensure checkpoint directory exists.
     os.makedirs(checkpoint_dir, exist_ok=True)
@@ -19,7 +27,14 @@ def save_checkpoint(agent, memory, checkpoint_dir, filename):
     
 def load_last_checkpoint(agent, memory, checkpoint_dir):
     '''
-    Load the last checkpoint file into the agent's DQN and the replay memory.
+    Description:
+        Load the last checkpoint file into the agent's DQN and the replay memory.
+    Arguments:
+        agent: the agent to be updated
+        memory: the replay memory to be updated
+        checkpoint_dir: the directory where the checkpoint file is saved
+    Output:
+        None, but the agent's DQN and the replay memory will be updated
     '''
     
     # Get list of checkpoint files in the current directory
@@ -44,7 +59,13 @@ def load_last_checkpoint(agent, memory, checkpoint_dir):
     
 def remove_previous_checkpoints(checkpoint_dir):
     '''
-    Remove the previous checkpoints, all but the last checkpoint.
+    Description:
+        Remove all the checkpoint files except the last one for 
+        efficient memory usage.
+    Arguments:
+        checkpoint_dir: the directory where the checkpoint files are saved
+    Output:
+        None, but the checkpoint files will be removed
     '''
     # Get list of checkpoint files in the current directory
     checkpoint_files = [f for f in os.listdir(checkpoint_dir) if f.startswith('checkpoint')]

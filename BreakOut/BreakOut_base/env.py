@@ -58,6 +58,9 @@ class BreakoutEnvWrapper:
         self.env.close() # Close the environment
 
 
+'''
+Below is the code for the instantiation of the BreakoutEnvWrapper as an example.
+'''
 
 # Test the wrapper by running this file directly
 if __name__ == "__main__":

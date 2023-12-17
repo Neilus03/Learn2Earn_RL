@@ -1,3 +1,7 @@
+'''
+This file contains the hyperparameters, flags and models used in the BreakOut experiment and the device where the experiment will be run.
+'''
+
 import torch
 
 #HYPERPARAMETERS
@@ -14,7 +18,7 @@ max_steps = 10000
 
 #FLAGS
 pretrained = False # Set to True to load a checkpoint
-log_to_wandb = True # Set to True to log metrics to wandb
+log_to_wandb = False # Set to True to log metrics to wandb
 free_checkpoint_memory = False # Set to True to remove previous checkpoints
 render = False # Set to True to render the environment
 negative_reward = False # Set to True to use negative rewards
@@ -26,4 +30,4 @@ attention_model = False # Set to True to use the attention model, False to use t
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #CHECKPOINTS
-checkpoint_dir = '/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_base/checkpoints'
+checkpoint_dir = './checkpoints'

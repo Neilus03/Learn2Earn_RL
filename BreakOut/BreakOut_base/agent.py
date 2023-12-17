@@ -75,6 +75,12 @@ class Agent:
         Description:
             Train the policy network using a batch of experiences sampled from the replay memory, 
             and update the target network if the push_count is a multiple of target_update.
+            
+        Parameters: 
+            env (gym.env): The Breakout environment.
+        
+        Output:
+            loss.item() (float): The loss of the policy network.
         '''
         # Check if the replay memory can provide a batch of experiences for training based on the batch size
         if self.replay_memory.can_provide_sample(self.batch_size):
@@ -124,13 +130,6 @@ class Agent:
             # Calculate the loss between the current Q-values and the expected Q-values
             loss = F.mse_loss(current_q_values, expected_q_values.unsqueeze(1)) #I use the mean squared error loss function as in the paper "Playing Atari with Deep Reinforcement Learning"
             
-            # Debug prints
-            # Q(s, a) = r + (gamma * max(Q(s', a')) * (1 - done))
-            
-            #print(f"Current Q-values: {current_q_values}") #Q-values calculated using the policy network
-            #print(f"Expected Q-values: {expected_q_values}") #Q-values calculated using the target network
-            #print(f"Loss: {loss}")
-            
             # Check if loss is None or not a number
             if loss is None or torch.isnan(loss).any():
                 print("Loss computation failed.")
@@ -158,6 +157,12 @@ class Agent:
         Description:
             Update the weights of the target network to be the same as the policy network.
             
+        Parameters:
+            self (Agent): The agent.
+        
+        Output:
+            None, but the weights of the target network will be updated.
+            
         Note: the target network is a copy of the policy network, that serves as a reference for the Q-values,
         and it is updated every target_update episodes. This is done to stabilize the training of the DQN by
         preventing the target Q-values from changing too rapidly and causing oscillations or divergence.
@@ -167,6 +172,9 @@ class Agent:
 
 
 
+'''
+Below is an example of how to use the Agent class.
+'''
 # Example usage of the Agent class:
 if __name__ == "__main__":
     # Initialize the Breakout environment wrapper

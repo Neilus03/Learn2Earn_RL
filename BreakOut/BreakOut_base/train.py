@@ -18,9 +18,16 @@ if config.log_to_wandb:
 def train():
     '''
     Description:
-            Train the agent in the Breakout environment using the DQN algorithm.
-            This is done by interacting with the environment, collecting experiences,
-            and training the agent using the collected experiences.
+        Train the agent in the Breakout environment using the DQN algorithm.
+        This is done by interacting with the environment, collecting experiences,
+        and training the agent using the collected experiences.
+    
+    Arguments:
+        None
+    
+    Output:
+        None, but the agent will be trained in the Breakout environment.
+            
     '''
     # Initialize the environment and the agent
     env = BreakoutEnvWrapper()# Create the Breakout environment
@@ -157,8 +164,7 @@ def train():
 
         if episode %1000 == 0:
             print(f"Episode: {episode} Episode Reward: {episode_reward}")
-        #break # Debugging
-        
+
     env.close() # Close the environment
     if config.log_to_wandb:
         wandb.finish() # Finish the wandb run

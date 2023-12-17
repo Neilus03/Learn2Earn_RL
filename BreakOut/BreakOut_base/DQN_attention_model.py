@@ -53,6 +53,11 @@ class DeepQNetwork(nn.Module):
         x = F.relu(self.conv2(x))
         return x.view(1, -1).size(1)
 
+
+
+'''
+Below is the code for the instantiation of the DQN model as an example.
+'''
 # Example instantiation:
 if __name__ == "__main__":
     dqn = DeepQNetwork(image_height=84, image_width=84, num_actions=4)

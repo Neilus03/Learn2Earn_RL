@@ -41,9 +41,17 @@ class ReplayMemory:
 
     def sample(self, batch_size):
         '''
-        Sample a random batch of experiences from the replay memory by using the
-        random.sample() method which returns a list of random samples from the memory list.
-        This is done for getting a random batch of experiences for training the DQN.
+        Description:
+            Sample a random batch of experiences from the replay memory by using the
+            random.sample() method which returns a list of random samples from the memory list.
+            This is done for getting a random batch of experiences for training the DQN.
+        
+        Parameters:
+            batch_size (int): The number of experiences to be sampled from the memory list.
+        
+        Returns:
+            A random sample of batch_size number of experiences from the memory list but without None experiences.
+            None if the memory list is not full enough to provide a random batch of experiences for training.
         '''
         if self.can_provide_sample(batch_size): # Check if the memory list is full enough to provide a random batch of experiences for training
             #return a sample of batch_size number of experiences from the memory list but without None experiences
@@ -54,12 +62,21 @@ class ReplayMemory:
         
     def can_provide_sample(self, batch_size): 
         '''
-        Check if the memory list is full enough to provide a random batch of experiences for training, and make sure that there are at
-        least batch_size non None experiences.
-        Because we can't train the DQN if the memory list is not full enough, and training it with Nones wouldnt be useful either.
-        At the first episodes the memory list is not full enough, so we need to wait until it is full enough.
-        Then we can start training the DQN. Luckily, the memory list fills up quickly.
+        Description:
+            Check if the memory list is full enough to provide a random batch of experiences for training, and make sure that there are at
+            least batch_size non None experiences, because we can't train the DQN if the memory list is not full enough, and training it 
+            with Nones wouldnt be useful either. At the first episodes the memory list is not full enough, so we need to wait until it is 
+            full enough. Then we can start training the DQN. Luckily, the memory list fills up quickly.
+            
+        Parameters:
+            batch_size (int): The number of experiences to be sampled from the memory list.
+            
+        Returns:
+            True if the memory list is full enough to provide a random batch of experiences for training, and there are at
+            least batch_size non None experiences.
+            False otherwise.
         '''
+
         # Check if the memory list is full enough to provide a random batch of experiences for training
         # and make sure that there are at least batch_size non None experiences in the memory list
         return len(self.memory) >= batch_size and self.memory.count(None) < len(self.memory) - batch_size
@@ -107,28 +124,18 @@ class ReplayMemory:
 
 
         
-        
+'''
+Below is the code for the instantiation of the ReplayMemory class as an example.
+'''        
 
 # Example usage of the ReplayMemory class:
 if __name__ == '__main__':
-    memory = ReplayMemory(capacity=10000) # Create a replay memory with a capacity of 10000 experiences
-    print("Initial memory size:", len(memory.memory)) # Print the initial size of the memory list
-    print("Initial push count:", memory.push_count) # Print the initial push count
-
-    '''for i in range(1, 30): 
-        memory.push(i, i, i, i, i, i) # Push a new experience to the memory list
-        print("Memory size:", len(memory.memory)) # Print the size of the memory list
-        print("Push count:", memory.push_count) # Print the push count
-        print("Memory:", memory.memory) # Print the memory list
-        print("Sample:", memory.sample(3)) # Print a random sample of 3 experiences from the memory list
-        print("Can provide sample:", memory.can_provide_sample(3)) # Print whether the memory list is full enough to provide
-                                                                #  a random sample of 3 experiences for training
-        print()
-    '''
-    # Test the prepopulate_replay_memory method
     import gymnasium as gym
     from env import BreakoutEnvWrapper
     env = BreakoutEnvWrapper()
+    memory = ReplayMemory(capacity=10000) # Create a replay memory with a capacity of 10000 experiences
+    print("Initial memory size:", len(memory.memory)) # Print the initial size of the memory list
+    print("Initial push count:", memory.push_count) # Print the initial push count
     memory.prepopulate_replay_memory(env, 64, env.action_space)
     print("None in memory", memory.memory.count(None))
     
