@@ -1,6 +1,6 @@
 # Lunar Lander Reinforcement Learning Project
 
-This section of the repository contains the implementation of a REINFORCE algorithm applied to the Lunar Lander environment from the OpenAI Gym.
+This section of the repository contains the implementation of a REINFORCE algorithm applied to the Lunar Lander environment from the Farama fundation's gymnasium.
 
 ## Project Structure
 
@@ -15,7 +15,7 @@ The `REINFORCE_Lunar_Landerv3.ipynb` notebook contains the code, along with deta
 
 To run the notebook and experiment with the trained model, you need to:
 
-1. Install dependencies (list any required libraries, like TensorFlow, PyTorch, OpenAI Gym, etc.)
+1. Install dependencies 
 2. Navigate to the notebook and follow the instructions provided within.
 3. Use the `weights` directory to load pre-trained models.
 
