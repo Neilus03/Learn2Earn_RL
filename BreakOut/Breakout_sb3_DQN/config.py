@@ -11,10 +11,10 @@ pretrained = False # Set to True if you want to load a pretrained model
 check_freq = 2000
 
 #save_path is the path where the best model will be saved
-save_path = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_DQN/breakout_DQN_1M_save_path"
+save_path = "./breakout_DQN_1M_save_path"
  
 #log_dir is the path where the logs will be saved
-log_dir = "/home/ndelafuente/Downloads/Learn2Earn_RL/BreakOut/BreakOut_sb3_DQN/log_dir"
+log_dir = "./log_dir"
 
 
 '''
@@ -120,6 +120,9 @@ n_envs = 4
 '''
 Wandb configuration
 '''
+#log_to_wandb is a boolean that indicates if the training process will be logged to wandb
+log_to_wandb = False
+
 # project is the name of the project in wandb
 project_train = "BREAKOUT_SB3_BENCHMARK"
 project_test = "breakout-sb3-DQN-test"
