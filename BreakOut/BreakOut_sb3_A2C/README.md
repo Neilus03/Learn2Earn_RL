@@ -21,3 +21,17 @@ To run this project, you need to have Python installed along with the following 
 You can install these packages using `pip`:
 
 ```pip install stable-baselines3[extra] gymnasium wandb numpy```
+
+## Training the Agent
+To train the A2C agent, run the train_A2C.py script:
+```python train_A2C.py```
+
+Make sure to check the config.py file for configuration settings like whether to use a pretrained model and the checkpoint frequency.
+
+## Testing the Agent
+After training, you can test the agent using the test_A2C.py script:
+
+
+```python test_A2C.py```
+
+This will use the trained model and log the results to wandb for performance tracking.
