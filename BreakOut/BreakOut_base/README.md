@@ -31,5 +31,5 @@ python train.py
 
 Adjust hyperparameters in config.py as needed. For example, you can choose between a standard DQN and a DQN with an attention mechanism.
 
-Testing
+## Testing
 Testing routines are embedded within the training script, where the agent's performance is periodically evaluated.
