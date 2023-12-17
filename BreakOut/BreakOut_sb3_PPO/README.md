@@ -1,6 +1,6 @@
 # BreakOut A2C Reinforcement Learning Project
 
-This repository contains code for training and testing an Proximal Policy Optimization (PPO) agent on the Breakout environment using Stable Baselines 3's PPO implementation.
+This repository contains code for training and testing a Proximal Policy Optimization (PPO) agent on the Breakout environment using Stable Baselines 3's PPO implementation.
 
 ## Files Description
 
