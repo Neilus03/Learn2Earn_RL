@@ -1,8 +1,0 @@
-/home/ndelafuente/miniconda3/envs/pytorch-env/lib/python3.11/site-packages/gymnasium/wrappers/record_video.py:94: UserWarning: [33mWARN: Overwriting existing videos at /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3 folder (try specifying a different `video_folder` for the `RecordVideo` wrapper if this is not desired)
-  logger.warn(
-Moviepy - Building video /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4.
-Moviepy - Writing video /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4
-Moviepy - Done !
-Moviepy - video ready /home/ndelafuente/Desktop/Learn2Earn_RL/LunarLander/Reinforce_Lunar_Lander/Videosv3/rl-video-episode-0.mp4
-Error in callback <bound method _WandbInit._pause_backend of <wandb.sdk.wandb_init._WandbInit object at 0x7f00ced9fd90>> (for post_run_cell), with arguments args (<ExecutionResult object at 7f0112a5c550, execution_count=4 error_before_exec=None error_in_exec=Parent directory weights does not exist. info=<ExecutionInfo object at 7f00d23aa850, raw_cell="
-# Initialize Weights & Biases
