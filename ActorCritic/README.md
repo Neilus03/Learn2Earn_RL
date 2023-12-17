@@ -1,9 +1,9 @@
 # Overview
 This Python script trains an actor-critic model using PyTorch, suitable for reinforcement learning environments provided by Gymnasium. The script integrates with Weights & Biases (wandb) for logging and tracking experiments. It supports multiple environments, configurable training parameters, and offers options for rendering, logging, and model saving.
 
-# Execution and usage of arguments
+# Execution and usage of arguments for train.py
 
-To run the script, use the following command:
+To run the train script, use the following command:
 
 ```
 python train.py [arguments]
@@ -34,3 +34,25 @@ Usage: --save-interval 100
 python train.py --env MountainCar-v0 --gamma 0.95 --lr 1e-2 --seed 42 --log-interval 20 --save-interval 50 --wandb
 ```
 This command trains the model on MountainCar-v0 environment with a learning rate of 1e-2, gamma value of 0.95, random seed 42, logs every 20 episodes, saves the model every 50 episodes, and enables wandb logging.
+
+
+# Execution and usage of arguments for test.py
+
+```
+python test.py [arguments]
+```
+
+## Arguments
+
+- **--env**: Specify the Gymnasium environment (Default: CartPole-v1). Supported options: CartPole-v1, MountainCar-v0, Acrobot-v1.
+Usage: --env CartPole-v1
+
+- **--model-path**: Specify the path to the model trained. It is a required argument.
+Usage: --model-path './MountainCar-v0_actor_critic_model_10.pth'
+
+## Example Command
+
+```
+./MountainCar-v0_actor_critic_model_10.pth
+```
+  
