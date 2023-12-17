@@ -8,6 +8,11 @@ This repository hosts a Reinforcement Learning (RL) project titled "Learn2Earn_R
 - **Blackjack**: RL algorithms applied to the Blackjack card game.
 - **BreakOut**: Experimentation with RL in the BreakOut game environment.
 - **LunarLander**: Application of RL techniques to the LunarLander simulation.
+- **requirements**: file with the packages needed.
+
+## Documents
+- **Learn2Earn**: Report of the project.
+- **A comparative study of Deep Reinforcement Learning models**: Paper of the benchmarking of the models
 
 ## Technologies
 - **Language**: Python
