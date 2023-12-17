@@ -54,7 +54,7 @@ def main():
 
         # Save model every args.save_interval episodes
         if i_episode % args.save_interval == 0:
-            torch.save(model.state_dict(), f'actor_critic_model_{i_episode}.pth')
+            torch.save(model.state_dict(), f'{args.env}_actor_critic_model_{i_episode}.pth')
 
         # check if we have "solved" the cart pole problem
         if running_reward > env.spec.reward_threshold:
@@ -63,7 +63,7 @@ def main():
             
             # save the model if wandb flag is set to true
             if args.wandb:
-                torch.save(model.state_dict(), 'solved_actor_critic_model.pth')
+                torch.save(model.state_dict(), 'solved_'+args.env+'_actor_critic_model.pth')
             break
 
 

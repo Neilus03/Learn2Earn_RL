@@ -4,22 +4,23 @@ import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-#from gymnasium.wrappers import Monitor
 from AC_model import AC_Policy
 
 def main():
     parser = argparse.ArgumentParser(description='Test the Actor-Critic model')
     parser.add_argument('--model-path', type=str, required=True, help='Path to the trained model')
+    parser.add_argument('--env', type=str, default='CartPole-v1', choices=['CartPole-v1', 'MountainCar-v0', 'Acrobot-v1'],
+                        help='Environment to use (default: CartPole-v1)') # usage: python train.py --env CartPole-v1
     args = parser.parse_args()
-
+    
+    # Create the environment and wrap it to record a video
+    env = gym.make(args.env, render_mode="human")
+    
     # Load the trained model
-    model = AC_Policy(4, 128, 2)
+    
+    model = AC_Policy(env.observation_space.shape[0], 128, env.action_space.n)
     model.load_state_dict(torch.load(args.model_path))
     model.eval()
-
-    # Create the environment and wrap it to record a video
-    env = gym.make('CartPole-v1', render_mode="human")
-    #env = Monitor(env, './video', force=True)
 
     state, _info = env.reset()
     done = False
