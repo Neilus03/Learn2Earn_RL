@@ -53,6 +53,6 @@ Usage: --model-path './MountainCar-v0_actor_critic_model_10.pth'
 ## Example Command
 
 ```
-./MountainCar-v0_actor_critic_model_10.pth
+python test.py --model-path './MountainCar-v0_actor_critic_model_10.pth' --env 'MountainCar-v0'
 ```
   
