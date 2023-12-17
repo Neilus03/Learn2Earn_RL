@@ -9,3 +9,4 @@ time
 seaborn
 tqdm
 pygame
+opencv-python
