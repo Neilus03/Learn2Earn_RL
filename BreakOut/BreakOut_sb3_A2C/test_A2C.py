@@ -22,14 +22,18 @@ from utils import make_env, unzip_file
 '''
 Set up wandb
 '''
-wandb.init(project=config.name_test, entity= config.entity, sync_tensorboard=config.sync_tensorboard, name=config.name_test, notes=config.notes)
+if config.log_to_wandb:
+    wandb.init(project=config.name_test, entity= config.entity, sync_tensorboard=config.sync_tensorboard, name=config.name_test, notes=config.notes)
 
 
 '''
 Set up the environment and the model to test
 '''
-#Unzip the file a2c_Breakout_1M.zip and store the unzipped files in the folder a2c_Breakout_unzipped
-unzip_file(config.saved_model_path, config.unzip_file_path) 
+
+# Unzip the saved model if config.pretrained is set to True in config.py
+if config.pretrained:
+    #Unzip the file a2c_Breakout_1M.zip and store the unzipped files in the folder a2c_Breakout_unzipped
+    unzip_file(config.saved_model_path, config.unzip_file_path) 
            
 #We start with a single environment for Breakout with render mode set to human
 env = make_env("BreakoutNoFrameskip-v4") 
@@ -43,9 +47,11 @@ model = A2C(policy = config.policy
             ,env = env
             ,verbose = config.verbose)
 
-# Load the model components, including the policy network and the value network
-model.policy.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.pth")))
-model.policy.optimizer.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.optimizer.pth")))
+# Load the model if config.pretrained is set to True in config.py
+if config.pretrained:
+    # Load the model components, including the policy network and the value network
+    model.policy.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.pth")))
+    model.policy.optimizer.load_state_dict(torch.load(os.path.join(config.unzip_file_path, "policy.optimizer.pth")))
 
 
 '''
@@ -67,11 +73,14 @@ for episode in range(config.test_episodes):
         # Render the environment to visualize the gameplay of the trained agent
         env.render()
     # Log the total reward of the episode to wandb
-    wandb.log({'test_episode_reward': episode_reward, 'test_episode': episode})
+    if config.log_to_wandb:
+        wandb.log({'test_episode_reward': episode_reward, 'test_episode': episode})
 
 
 '''
 Close the environment and finish the logging
 '''
 env.close()
-wandb.finish()
+
+if config.log_to_wandb:
+    wandb.finish()

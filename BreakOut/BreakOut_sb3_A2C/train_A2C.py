@@ -38,9 +38,10 @@ custom_callback = CustomWandbCallback(config.check_freq, config.save_path)
 Set up loging to wandb
 '''
 #Set wandb to log the training process
-wandb.init(project=config.project_train, entity = config.entity, name=config.name_train, notes=config.notes, sync_tensorboard=config.sync_tensorboard)
-#wandb_callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
-wandb_callback = WandbCallback()
+if config.log_to_wandb:
+    wandb.init(project=config.project_train, entity = config.entity, name=config.name_train, notes=config.notes, sync_tensorboard=config.sync_tensorboard)
+    #wandb_callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
+    wandb_callback = WandbCallback()
 
 
 '''
@@ -98,7 +99,11 @@ Train the model and save it
 #The average number of frames in 1 game is 1000, so 1e6 timesteps is 1000 games more or less.
 #log_interval is the number of timesteps between each log, in this case, the training process will be logged every 100 timesteps.
 #callback is a callback that logs the training process to wandb, this is done because wandb.watch() does not work with sb3
-model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback], progress_bar=True)
+
+if config.log_to_wandb:
+    model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=[wandb_callback, custom_callback], progress_bar=True)
+else:
+    model.learn(total_timesteps=config.total_timesteps, log_interval=config.log_interval, callback=custom_callback, progress_bar=True)
 #Save the model 
 model.save(config.saved_model_path[:-4]) #remove the .zip extension from the path
 
@@ -107,4 +112,5 @@ model.save(config.saved_model_path[:-4]) #remove the .zip extension from the pat
 Close the environment and finish the logging
 '''
 env.close()
-wandb.finish()
+if config.log_to_wandb:
+    wandb.finish()
