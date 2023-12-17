@@ -15,7 +15,7 @@ To run this project, you need to have Python installed along with the following 
 
 - stable-baselines3
 - gymnasium (formerly known as `gym`)
-- wandb (for logging and tracking experiments)
+- wandb (for logging and tracking experiments) By default the flag is set to false, if you want to use it add your user.
 - numpy
 
 You can install these packages using `pip`:
