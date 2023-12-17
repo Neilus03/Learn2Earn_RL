@@ -16,7 +16,9 @@ This repository hosts a Reinforcement Learning (RL) project titled "Learn2Earn_R
 ## Installation
 Clone the repository and navigate to the desired sub-directory to explore specific RL implementations.
 
+bash```
 pip install -r requirements.txt
+```
 
 ---
 
