@@ -19,7 +19,7 @@ This directory holds the implementation of a Deep Q-Network (DQN) with and witho
 Ensure you have Python 3.x installed and the following dependencies:
 
 ```bash
-pip install torch gymnasium wandb numpy
+pip install torch gymnasium[extra] wandb numpy
 ```
 
 ## Training
