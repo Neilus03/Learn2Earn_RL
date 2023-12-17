@@ -19,7 +19,3 @@ Clone the repository and navigate to the desired sub-directory to explore specif
 ```bash
 pip install -r requirements.txt
 ```
-
----
-
-Explore the repository [here](https://github.com/Neilus03/Learn2Earn_RL) for more details and updates.
