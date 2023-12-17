@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='PyTorch actor-critic example')
     
-    parser.add_argument('--env', type=str, default='CartPole-v1', choices=['CartPole-v1', 'MountainCar-v0'],
+    parser.add_argument('--env', type=str, default='CartPole-v1', choices=['CartPole-v1', 'MountainCar-v0', 'Acrobot-v1'],
                         help='Environment to use (default: CartPole-v1)') # usage: python train.py --env CartPole-v1
 
     parser.add_argument('--gamma', type=float, default=0.99, metavar='G',
@@ -102,7 +102,8 @@ if __name__ == '__main__':
 
     SavedAction = namedtuple('SavedAction', ['log_prob', 'value'])
 
-    env = gym.make(args.env)
+
+    env = gym.make(args.env, render_mode="human") if args.render else gym.make(args.env)
     env.reset(seed=args.seed)
     torch.manual_seed(args.seed)
 
@@ -111,10 +112,7 @@ if __name__ == '__main__':
         wandb.init(project='AC_agent', entity='ai42', name='AC_agent1'+args.env)
 
     # Model initialization
-    if args.env == 'CartPole-v1':
-        model = AC_Policy()
-    else:
-        model = AC_Policy(input_dim=2, hidden_dim=128, output_dim=1)
+    model = AC_Policy(input_dim=env.observation_space.shape[0], hidden_dim=128, output_dim=env.action_space.n)
 
     # Optimizer initialization with Adam 
     optimizer = optim.Adam(model.parameters(), args.lr)
