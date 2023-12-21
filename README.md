@@ -1,7 +1,7 @@
 # Learn2Earn_RL
 
 ## Overview
-This repository hosts a Reinforcement Learning (RL) project titled "Learn2Earn_RL". It's an experimental space where RL algorithms are applied in various simulations and contexts, emphasizing interactive learning and practical applications.
+This repository hosts a Reinforcement Learning (RL) project titled "Learn2Earn_RL". It's an experimental space where RL algorithms are applied in various simulations and contexts, emphasizing interactive learning and practical applications. 
 
 ## Contents
 - **ActorCritic**: Implementation of Actor-Critic multigaming agent with Pytorch.
